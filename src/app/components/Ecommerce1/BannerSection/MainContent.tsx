@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import aple from "../../../../public/hero_endframe__cvklg0xk3w6e_large 2.png"
-import appleLogo from "../../../../public/1200px-Apple_gray_logo 1.png"
+import aple from "../../../../../public/hero_endframe__cvklg0xk3w6e_large 2.png"
+import appleLogo from "../../../../../public/1200px-Apple_gray_logo 1.png"
 
 const data = [
   {
@@ -12,18 +12,7 @@ const data = [
     buttonText: 'Shop Now',
     imageUrl: '/images/iphone-promo.png',
   },
-//   {
-//     title: 'Logitech Gaming',
-//     subtitle: 'New Gaming Gear',
-//     buttonText: 'Explore Now',
-//     imageUrl: '/images/logitech-promo.png',
-//   },
-//   {
-//     title: 'Samsung Galaxy',
-//     subtitle: 'The new Samsung S23 Ultra',
-//     buttonText: 'Buy Now',
-//     imageUrl: '/images/samsung-promo.png',
-//   },
+
 ];
 
 const MainContent = () => {

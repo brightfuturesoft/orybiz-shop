@@ -3,13 +3,11 @@
 import React from 'react';
 import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline'; // Using Heroicons for a clean look
 import Link from 'next/link';
-import Navbar from '../components/Navbar/Navbar';
-import Footer from '../components/Footer/Footer';
+
 
 const ContactPage = () => {
   return (
    <section>
-    <Navbar/>
      <div className="container mx-auto px-4 py-8 md:py-16">
       {/* Breadcrumb / Navigation */}
       <div className="mb-8 md:mb-16 text-gray-600 text-sm md:text-base">
@@ -95,7 +93,6 @@ const ContactPage = () => {
         </div>
       </div>
     </div>
-    <Footer/>
    </section>
   );
 };

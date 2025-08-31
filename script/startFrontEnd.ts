@@ -10,7 +10,6 @@ interface UserData {
 }
 
 const BACKEND_URL = "http://localhost:5005/api/v1/user";
-
 async function startFrontend() {
   try {
     const res = await axios.get<UserData>(BACKEND_URL);
@@ -28,7 +27,6 @@ async function startFrontend() {
     child.stdout?.on("data", (data) => console.log(data.toString()));
     child.stderr?.on("data", (data) => console.error(data.toString()));
   } catch (err: unknown) {
-    // Type guards
     if (axios.isAxiosError(err)) {
       console.error("Failed to fetch user data from backend:", err.message);
     } else if (err instanceof Error) {

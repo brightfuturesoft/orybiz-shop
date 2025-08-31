@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Heart, Menu, Search, ShoppingCart, User } from 'lucide-react';
-import React, { useState } from 'react';
-import MobileMenu from '../MobileMenu/MobileMenu';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Use this hook to get the current URL path
+import { Heart, Menu, Search, ShoppingCart, User } from "lucide-react";
+import React, { useState } from "react";
+import MobileMenu from "../MobileMenu/MobileMenu";
+import Link from "next/link";
+import { usePathname } from "next/navigation"; // Use this hook to get the current URL path
 
 interface NavbarProps {
   cartCount?: number;
@@ -14,7 +14,13 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname(); // Get the current URL path
 
-  const links = ['Home', 'Contact', 'About', 'Sign Up'];
+  const links = [
+  { label: 'Home', href: '/' },
+  { label: 'Contact', href: '/ecommerce1/contact' },
+  { label: 'About', href: '/about' },
+  { label: 'Sign Up', href: '/signup' },
+];
+
 
   return (
     <header className="sticky top-0 z-50 py-3 w-full border-b border-gray-300 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
@@ -35,19 +41,17 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
           <nav className="hidden md:flex flex-grow justify-center">
             <ul className="flex items-center space-x-8 lg:space-x-12">
               {links.map((link) => {
-                const href = link === 'Home' ? '/' : `/${link.toLowerCase()}`;
-                const isActive = pathname === href;
-
+                const isActive = pathname === link.href;
                 return (
-                  <li key={link}>
+                  <li key={link.label}>
                     <Link
-                      href={href}
+                      href={link.href}
                       className={`relative cursor-pointer text-black hover:text-red-500 transition-colors
-                        ${isActive ? 'font-semibold' : ''}
-                        after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:transform after:-translate-x-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 hover:after:w-full
-                        ${isActive ? 'after:w-full' : ''}`}
+            ${isActive ? "font-semibold" : ""}
+            after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:transform after:-translate-x-1/2 after:w-0 after:h-[2px] after:bg-black after:transition-all after:duration-300 hover:after:w-full
+            ${isActive ? "after:w-full" : ""}`}
                     >
-                      {link}
+                      {link.label}
                     </Link>
                   </li>
                 );

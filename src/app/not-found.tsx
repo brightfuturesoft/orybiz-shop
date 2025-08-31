@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer';
+import { Footer, Navbar } from './components/Ecommerce1';
+
 
 const NotFoundPage = () => {
   return (
@@ -13,9 +13,6 @@ const NotFoundPage = () => {
         <span>404 Error</span>
       </div>
          <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] bg-white text-center px-4">
-      {/* Breadcrumb / Navigation */}
-     
-
       {/* Main Content */}
       <h1 className="text-4xl md:text-[110px] font-semibold text-gray-800 mb-5">
         404 Not Found

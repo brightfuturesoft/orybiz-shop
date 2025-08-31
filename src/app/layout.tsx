@@ -1,8 +1,8 @@
 'use client';
-import { Geist, Geist_Mono, Inter, Poppins } from "next/font/google";
+import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./context/queryClient";
 
 
@@ -15,23 +15,16 @@ interface RootLayoutProps {
 const poppins = Poppins({
   subsets: ['latin'],
   variable: '--font-poppins',
-  weight: ['400', '500', '600', '700'], // optional, joto weight lagbe
+  weight: ['400', '500', '600', '700'], 
 });
 
-
 export default function RootLayout({ children }: RootLayoutProps) {
-
-  
-
-
   return (
     <html lang="en" className={poppins.variable}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-
           <QueryClientProvider client={queryClient}>
             {children}
           </QueryClientProvider>
-
       </body>
     </html>
   );

@@ -27,12 +27,11 @@ body {
 }
 
 
-/* global.css বা index.css ফাইলে এটা যোগ করো */
 .hide-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE এবং Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none; 
 }

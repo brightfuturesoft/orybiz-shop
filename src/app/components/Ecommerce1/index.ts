@@ -8,3 +8,4 @@ export { default as ExploreProducts } from './ExploreProducts/ExploreProducts';
 export { default as MusicSection } from './MusicSection/MusicSection';
 export { default as ExploreService } from './Service/ExploreService';
 export { default as FeatureSection } from './FeatureSection/FeatureSection';
+export { default as StatsSection } from './StatsSection/StatsSection';

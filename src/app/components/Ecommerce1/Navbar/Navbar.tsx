@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // Use this hook to get the current URL path
+import { useWorkspace } from "@/app/context/WorkspaceContext";
 
 interface NavbarProps {
   cartCount?: number;
@@ -12,13 +13,14 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname(); // Get the current URL path
+   const { data } = useWorkspace();
+  const pathname = usePathname();
 
   const links = [
   { label: 'Home', href: '/' },
   { label: 'Contact', href: '/ecommerce1/contact' },
-  { label: 'About', href: '/about' },
-  { label: 'Sign Up', href: '/signup' },
+  { label: 'About', href: '/ecommerce1/about' },
+  { label: 'Sign Up', href: '/ecommerce1/signup' },
 ];
 
 
@@ -34,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-2xl font-bold text-black">Exclusive</h1>
+            <h1 className="text-2xl font-bold text-black">{data?.name}</h1>
           </div>
 
           {/* Center Section: Navigation Links (Desktop) */}

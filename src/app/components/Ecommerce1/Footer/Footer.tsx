@@ -1,16 +1,23 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { FacebookIcon, InstagramIcon, LinkedinIcon, TwitterIcon } from '../CustomIcons/CustomIcons';
+import { FacebookIcon, InstagramIcon, LinkedinIcon, TwitterIcon, WhatsAppIcon, YouTubeIcon } from '../CustomIcons/CustomIcons';
+import { useWorkspaceStore } from '@/store/workspaceStore';
+import QRCode from 'react-qr-code';
 
 
 const Footer = () => {
+  const workspace = useWorkspaceStore((state) => state.workspace);
+   const qrData = workspace
+    ? `Name: ${workspace.name}\nID: ${workspace.unique_id}\nDomain: ${workspace.domain_info.domain}`
+    : '';
+
   return (
     <footer className="bg-black text-white py-16">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Column 1: Exclusive */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold mb-2">Exclusive</h3>
+            <h3 className="text-xl font-bold mb-2">{workspace?.name}</h3>
             <h4 className="font-semibold mb-1">Subscribe</h4>
             <p className="text-sm text-gray-400">Get 10% off your first order</p>
             <div className="relative">
@@ -56,50 +63,49 @@ const Footer = () => {
           </div>
 
           {/* Column 5: Download App */}
-          <div className="space-y-4">
+       <div className="space-y-4 flex flex-col">
             <h3 className="text-xl font-bold mb-2">Download App</h3>
             <p className="text-sm text-gray-400">Save $3 with App New User Only</p>
-            <div className="flex space-x-2 items-center">
-              <div className="w-24 h-24">
-                 <Image
-                          src="/Footer/Qrcode 1.png"
-                          alt={"QR Code"}
-                          width={150}
-                          height={150}
-                          className="transition-transform duration-300 group-hover:scale-110"
-                        />
-             
+            <div className="flex justify-between items-center gap-5">
+              <div className="w-10 h-10 bg-white p-1">
+                {workspace && <QRCode value={qrData} size={150} />}
               </div>
-              <div className="flex flex-col space-y-2">
-                  <Image
-                          src="/Footer/png-transparent-google-play-store-logo-google-play-app-store-android-wallets-text-label-logo.png"
-                          alt={"QR Code"}
-                          width={150}
-                          height={150}
-                          className="transition-transform duration-300 group-hover:scale-110"
-                        />
-                        <Image
-                          src="/Footer/download-appstore.png"
-                          alt={"QR Code"}
-                          width={150}
-                          height={150}
-                          className="transition-transform duration-300 group-hover:scale-110"
-                        />
-            
-              </div>
-            </div>
-            <div className="flex space-x-4 pt-2">
-              <Link href="#" aria-label="Facebook"><FacebookIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
-              <Link href="#" aria-label="Twitter"><TwitterIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
-              <Link href="#" aria-label="Instagram"><InstagramIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
-              <Link href="#" aria-label="LinkedIn"><LinkedinIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+
+              
             </div>
           </div>
         </div>
 
+ <div className='flex justify-center items-center gap-5 mt-5 md:mt-10'>
+    <div className="flex flex-col md:flex-row gap-2">
+                <Image
+                  src="/Footer/png-transparent-google-play-store-logo-google-play-app-store-android-wallets-text-label-logo.png"
+                  alt="Google Play"
+                  width={150}
+                  height={150}
+                  className="transition-transform duration-300 group-hover:scale-110"
+                />
+                <Image
+                  src="/Footer/download-appstore.png"
+                  alt="App Store"
+                  width={150}
+                  height={150}
+                  className="transition-transform duration-300 group-hover:scale-110"
+                />
+              </div>
+          <div className="flex space-x-4 pt-2">
+              <Link href={`${workspace?.social_info?.facebook}`} aria-label="Facebook"><FacebookIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+              <Link href={`${workspace?.social_info?.twitter}`} aria-label="Twitter"><TwitterIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+              <Link href={`${workspace?.social_info?.instagram}`} aria-label="Instagram"><InstagramIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+              <Link href={`${workspace?.social_info?.linkedin}`}aria-label="LinkedIn"><LinkedinIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+              <Link href={`${workspace?.social_info?.whatsapp}`}aria-label="Whatsapp"><WhatsAppIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+              <Link href={`${workspace?.social_info?.youtube}`}aria-label="Youtube"><YouTubeIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
+            </div>
+ </div>
+
         {/* Copyright Section */}
         <div className="border-t border-gray-700 mt-12 pt-6 text-center text-gray-500 text-sm">
-          &copy; Copyright Rimel 2022. All right reserved
+          &copy; Copyright {workspace?.name} 2022. All right reserved
         </div>
       </div>
     </footer>

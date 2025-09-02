@@ -3,9 +3,11 @@
 import React from 'react';
 import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline'; // Using Heroicons for a clean look
 import Link from 'next/link';
+import { useWorkspaceStore } from '@/store/workspaceStore';
 
 
 const ContactPage = () => {
+    const workspace = useWorkspaceStore((state) => state.workspace);
   return (
    <section>
      <div className="container mx-auto px-4 py-8 md:py-16">
@@ -30,7 +32,7 @@ const ContactPage = () => {
             We are available 24/7, 7 days a week.
           </p>
           <p className="text-gray-600 text-sm mb-6">
-            Phone: +8801611112222
+            Phone: {workspace?.contact_info.phone_number[0] ? workspace?.contact_info?.phone_number[0] : "+191967423" }
           </p>
           <hr className="border-gray-200 mb-6" />
           
@@ -44,10 +46,10 @@ const ContactPage = () => {
             Fill out our form and we will contact you within 24 hours.
           </p>
           <p className="text-gray-600 text-sm">
-            Emails: customer@exclusive.com
+            {workspace?.contact_info?.official_email ? workspace?.contact_info?.official_email : "official@gmail.com"}
           </p>
           <p className="text-gray-600 text-sm">
-            Emails: support@exclusive.com
+              {workspace?.contact_info?.support_email ? workspace?.contact_info?.support_email : "support@gmail.com"}
           </p>
         </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline'; // Using Heroicons for a clean look
+import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline'; 
 import Link from 'next/link';
 import { useWorkspaceStore } from '@/store/workspaceStore';
 

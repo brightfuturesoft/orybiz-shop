@@ -6,6 +6,7 @@ import { useWorkspaceStore } from "@/store/workspaceStore"
 import { useProductStore } from "@/store/productStore"
 import { useParams } from "next/navigation"
 import parse from "html-react-parser"
+import ReletedProducts from "@/app/components/Ecommerce1/ReletedItems/ReletedItems"
 
 export default function ProductPage() {
   const params = useParams()
@@ -237,6 +238,7 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
+      <ReletedProducts products={products || [] } />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { HeartIcon, EyeIcon } from '@heroicons/react/24/outline';
-import { StarIcon } from '@heroicons/react/24/solid';
 import { Product } from '@/app/types/product';
+import toast from 'react-hot-toast';
 
 
 interface ServiceCardProps {
@@ -10,6 +10,35 @@ interface ServiceCardProps {
 
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const isProductInCart = existingCart.some((item: Product) => item._id === product._id);
+    if (!isProductInCart) {
+      const updatedCart = [...existingCart, { ...product, quantity: 1 }];
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      window.dispatchEvent(new Event('cartUpdated')); 
+      toast.success(`${product.item_name} added to cart!`);
+    } else {
+      toast.error('Product already in cart!');
+    }
+  };
+  
+  const handleAddToWishlist = () => {
+    if (!product) return;
+    const existingWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const isProductInWishlist = existingWishlist.some((item: Product) => item._id === product._id);
+    if (!isProductInWishlist) {
+      const updatedWishlist = [...existingWishlist, product];
+      localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+      window.dispatchEvent(new Event('wishlistUpdated')); 
+      toast.success(`${product.item_name} added to wishlist!`);
+    } else {
+      toast.error('Product already in wishlist!');
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 rounded  p-3  group">
       {/* Image Section */}
@@ -23,7 +52,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
         />
         {/* Hover Actions */}
         <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
+          <button onClick={handleAddToWishlist}  className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
             <HeartIcon className="h-5 w-5" />
           </button>
           <button className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
@@ -32,7 +61,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
         </div>
 
           <div className="absolute bottom-0 w-full flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button className="p-2 cursor-pointer  bg-black   text-white">
+          <button onClick={handleAddToCart} className="p-2 cursor-pointer  bg-black   text-white">
             Add To Cart
           </button>
          

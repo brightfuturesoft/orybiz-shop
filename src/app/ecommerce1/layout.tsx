@@ -2,6 +2,7 @@
 import React, { ReactNode, useEffect } from "react";
 import Ecommerce1Layout from "../layout/EcommerceLayout1";
 import { useWorkspaceStore } from "@/store/workspaceStore";
+import { Toaster } from 'react-hot-toast';
 
 interface EcommerceLayoutProps {
   children: ReactNode;

@@ -1,3 +1,4 @@
+"use client" 
 import Link from 'next/link';
 import Image from 'next/image';
 import { FacebookIcon, InstagramIcon, LinkedinIcon, TwitterIcon, WhatsAppIcon, YouTubeIcon } from '../CustomIcons/CustomIcons';

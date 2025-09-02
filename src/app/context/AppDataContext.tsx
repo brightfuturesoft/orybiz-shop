@@ -5,6 +5,7 @@ export interface AppDataType {
   _id: string;
   name: string;
   terms: string;
+  image:string;
   description: string;
   unique_id: string;
   created_at: string;

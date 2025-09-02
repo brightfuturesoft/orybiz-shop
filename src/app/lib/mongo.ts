@@ -1,5 +1,6 @@
 import { Db, MongoClient } from "mongodb";
-const MONGODB_URI = "mongodb+srv://bright_erp:bright_erp@brighterp.a62n9gp.mongodb.net"; 
+// const MONGODB_URI = "mongodb+srv://bright_erp:bright_erp@brighterp.a62n9gp.mongodb.net"; 
+const MONGODB_URI = "mongodb://localhost:27017/"; 
 
 if (!MONGODB_URI) throw new Error("Please define the MONGODB_URI environment variable");
 

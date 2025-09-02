@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
 import { Heart, Menu, Search, ShoppingCart, User } from "lucide-react";
 import React, { useState } from "react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Use this hook to get the current URL path
-// import { useWorkspace } from "@/app/context/WorkspaceContext";
+import { usePathname } from "next/navigation"; 
+import Image from "next/image";
+import { TWorkSpace } from "@/app/types/types";
+import Skeleton from "@/app/ui/LogoSkeleton/LogoSkeleton";
 
-interface NavbarProps {
-  cartCount?: number;
+
+export interface NavbarProps {
+  workspace: TWorkSpace | null; 
+  loading?: boolean; // optional loading prop
 }
 
-const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
+const Navbar: React.FC<NavbarProps> = ({ workspace, loading }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  //  const { data } = useWorkspace();
-  //  console.log(data)
   const pathname = usePathname();
 
   const links = [
-  { label: 'Home', href: '/' },
-  { label: 'Contact', href: '/ecommerce1/contact' },
-  { label: 'About', href: '/ecommerce1/about' },
-  { label: 'Sign Up', href: '/ecommerce1/signup' },
-];
-
+    { label: 'Home', href: '/' },
+    { label: 'Contact', href: '/ecommerce1/contact' },
+    { label: 'About', href: '/ecommerce1/about' },
+    { label: 'Sign Up', href: '/ecommerce1/signup' },
+  ];
 
   return (
     <header className="sticky top-0 z-50 py-3 w-full border-b border-gray-300 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between relative">
-          {/* Left Section: Logo and Mobile Menu Button */}
           <div className="flex items-center space-x-4 md:space-x-8">
             <button
               onClick={() => setIsMenuOpen(true)}
@@ -37,7 +37,19 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
             >
               <Menu className="h-6 w-6" />
             </button>
-            {/* <h1 className="text-2xl font-bold text-black">{data?.name}</h1> */}
+            {loading ? (
+              <Skeleton width={150} height={50} />
+            ) : (
+              workspace?.image && (
+                <Image
+                  src={workspace.image}
+                  alt={workspace.name || "Logo"}
+                  width={150}
+                  height={50}
+                  className="object-contain"
+                />
+              )
+            )}
           </div>
 
           {/* Center Section: Navigation Links (Desktop) */}
@@ -86,11 +98,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount = 0 }) => {
               </button>
               <button className="relative p-2 rounded-md hover:bg-gray-100 transition-colors">
                 <ShoppingCart className="h-6 w-6" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white text-xs font-bold">
-                    {cartCount}
-                  </span>
-                )}
               </button>
             </div>
           </div>

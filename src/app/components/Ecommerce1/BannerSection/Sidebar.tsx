@@ -4,11 +4,20 @@ import { ChevronRightIcon } from "lucide-react";
 interface Category {
   _id: string;
   name: string;
+  parentId?: string;
+  level: number;
   children?: Category[];
+  image?: string;
+  code?: string;
+  description?: string;
+  status?: string;
+  path?: string;
+  workspace_id?: string;
+  created_by?: string;
 }
 
 interface Props {
-  categories: Category[];
+  categoryTree: Category[]; // ✅ Add this
 }
 
 // Recursive component
@@ -40,11 +49,11 @@ const SidebarItem = ({ category }: { category: Category }) => {
   );
 };
 
-const Sidebar = ({ categories }: Props) => {
+const Sidebar = ({ categoryTree }: Props) => {
   return (
     <div className="md:w-64 flex-shrink-0 bg-white border-r border-gray-200 relative z-10">
       <ul className="py-4">
-        {categories.map(cat => (
+        {categoryTree.map(cat => (
           <SidebarItem key={cat._id} category={cat} />
         ))}
       </ul>

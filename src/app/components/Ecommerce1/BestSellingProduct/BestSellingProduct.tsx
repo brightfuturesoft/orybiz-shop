@@ -20,9 +20,13 @@ const BestSellingProduct: React.FC<BestSellingProductProps> = ({ products }) => 
         </div>
 
         <div className="flex justify-center mt-12">
-          <button className="bg-red-500 text-white px-10 py-4 rounded cursor-pointer hover:bg-red-600 transition-colors duration-300">
+          {
+            products?.length < 4 ? null : 
+            <button className="bg-red-500 text-white px-10 py-4 rounded cursor-pointer hover:bg-red-600 transition-colors duration-300">
             View All 
           </button>
+          }
+          
         </div>
       </div>
 

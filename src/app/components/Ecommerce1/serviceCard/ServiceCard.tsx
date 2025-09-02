@@ -1,22 +1,13 @@
 import Image from 'next/image';
 import { HeartIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { StarIcon } from '@heroicons/react/24/solid';
+import { Product } from '@/app/types/product';
 
-// Defining the type for a single product to ensure type safety
-interface Service {
-  name: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  isNew?: boolean;
-  colors?: string[];
-}
 
 interface ServiceCardProps {
-  product: Service;
+  product: Product;
 }
+
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
   return (
@@ -24,8 +15,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
       {/* Image Section */}
       <div className="relative flex justify-center items-center w-[250px] h-[220px] rounded border border-gray-300">
         <Image
-          src={product.image}
-          alt={product.name}
+           src={product.attachments?.[0]}
+          alt={product.item_name}
           width={200}
           height={150}
           className="transition-transform duration-300 group-hover:scale-110"
@@ -51,15 +42,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
       
 
       {/* Details */}
-      <p className="text-black font-medium text-[16px] leading-6 truncate">{product.name}</p>
+      <p className="text-black font-medium text-[16px] leading-6 truncate">{product.item_name}</p>
       <div className="flex items-center gap-2 -mt-2">
-          <span className="text-red-500 font-bold">${product.price}</span>
-        <div className="flex">
+          <span className="text-red-500 font-bold">${product.selling_price}</span>
+        {/* <div className="flex">
           {[...Array(5)].map((_, i) => (
             <StarIcon key={i} className={`h-4 w-4 ${i < product.rating ? 'text-yellow-400' : 'text-gray-300'}`} />
           ))}
-        </div>
-        <span className="text-gray-500 ml-2">({product.reviews})</span>
+        </div> */}
+        <span className="text-gray-500 ml-2">Stock:({product.stock_quantites ? product.stock_quantites : 0})</span>
       </div>
     </div>
   );

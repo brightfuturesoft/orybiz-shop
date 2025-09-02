@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { HeartIcon, EyeIcon } from '@heroicons/react/24/outline';
-import { StarIcon } from '@heroicons/react/24/solid';
 import { Product } from '@/app/types/product';
+import Link from 'next/link';
+
 
 // Defining the type for a single product to ensure type safety
 
@@ -11,6 +12,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+
   return (
     <div className="flex flex-col gap-4 rounded  p-3  group">
       {/* Image Section */}
@@ -27,9 +29,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <button className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
             <HeartIcon className="h-5 w-5" />
           </button>
-          <button className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
-            <EyeIcon className="h-5 w-5" />
-          </button>
+      
+          <Link className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white" 
+           href={`/ecommerce1/products/${product._id}`}>
+          <EyeIcon className="h-5 w-5" />
+            </Link>
         </div>
 
           <div className="absolute bottom-0 w-full flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">

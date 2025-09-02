@@ -36,9 +36,12 @@ export default function HomePage() {
     created_by: cat.created_by,
   }));
 
-  
 const productItems: Product[] = (products || []).filter(
   (p) => p.item_type === "product"
+);
+
+const serviceItems: Product[] = (products || []).filter(
+  (p) => p.item_type === "service"
 );
 
   return (
@@ -52,7 +55,7 @@ const productItems: Product[] = (products || []).filter(
       <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
       <MusicSection />
       <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
-      <ExploreService />
+      <ExploreService products={serviceItems || []}/>
       <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
       <FeatureSection />
     </div>

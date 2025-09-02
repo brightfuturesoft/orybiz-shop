@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import ServiceCard from '../serviceCard/ServiceCard';
+import { Product } from '@/app/types/product';
 
 
 // Hard-coded data for all products
@@ -74,8 +75,11 @@ const allProducts = [
   },
 ];
 
+interface ExploreServiceProps {
+  products: Product[]; 
+}
 
-const ExploreService = () => {
+const ExploreService: React.FC<ExploreServiceProps>  = ({products}) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -138,17 +142,20 @@ const ExploreService = () => {
         onScroll={updateScrollState}
         className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4 "
       >
-        {allProducts.map((product, index) => (
+        {products.map((product, index) => (
           <ServiceCard key={index} product={product} />
         ))}
       </div>
 
       {/* "View All Products" Button */}
-      <div className="flex justify-center mt-12">
+      {
+        products?.length < 4 ? null : <div className="flex justify-center mt-12">
         <button className="bg-red-500 cursor-pointer text-white px-10 py-4 rounded  hover:bg-red-600 transition-colors duration-300">
           View All Service
         </button>
       </div>
+      }
+      
     </div>
   );
 };

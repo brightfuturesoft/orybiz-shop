@@ -78,11 +78,14 @@ const ExploreProducts: React.FC<ExploreProductProps> = ({products}) => {
       </div>
 
       {/* "View All Products" Button */}
-      <div className="flex justify-center mt-12">
+      {
+        products?.length < 4 ? null : <div className="flex justify-center mt-12">
         <button className="bg-red-500 cursor-pointer text-white px-10 py-4 rounded  hover:bg-red-600 transition-colors duration-300">
           View All Products
         </button>
       </div>
+      }
+      
     </div>
   );
 };

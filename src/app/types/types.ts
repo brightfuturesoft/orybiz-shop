@@ -52,9 +52,26 @@ export interface TWorkSpace {
 
 
 export interface CategoryType {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
   _id: string;
   name: string;
   workspace_id: string;
   is_active: boolean;
+}
+
+
+export interface Category {
+  _id: string;
+  name: string;
+  parentId?: string;
+  level: number;
+  children?: Category[];
+  image?: string;
+  code?: string;
+  description?: string;
+  status?: string;
+  path?: string;
+  workspace_id?: string;
+  created_by?: string;
 }

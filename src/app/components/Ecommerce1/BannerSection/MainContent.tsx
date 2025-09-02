@@ -19,8 +19,6 @@ const MainContent = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef(0);
   const isDragging = useRef(false);
-
-  // Automatic slider
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((current) => (current + 1) % data.length);
@@ -28,34 +26,28 @@ const MainContent = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Touch handlers
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
   };
-
   const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     const touchEndX = e.changedTouches[0].clientX;
     handleSwipe(touchEndX - touchStartX.current);
   };
 
-  // Mouse handlers
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     isDragging.current = true;
     touchStartX.current = e.clientX;
   };
-
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging.current) return;
     isDragging.current = false;
     handleSwipe(e.clientX - touchStartX.current);
   };
-
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging.current) return;
     isDragging.current = false;
     handleSwipe(e.clientX - touchStartX.current);
   };
-
   const handleSwipe = (distance: number) => {
     if (distance > 50) {
       setActiveIndex((current) => (current - 1 + data.length) % data.length);
@@ -92,8 +84,6 @@ const MainContent = () => {
       <button className="flex flex-col items-start cursor-pointer  space-x-2 text-sm md:text-base font-medium  border-white px-4 py-2  mt-4 transition-colors  ">
 <div className='flex gap-2 items-center'>  <span>{promo.buttonText}</span>
   
-  {/* Divider / line */}
-
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -109,9 +99,6 @@ const MainContent = () => {
     <path d="M3.5 12H20M20 12L13 5M20 12L13 19" stroke="#FAFAFA"/>
   </svg></div>
     <div className="w-[81px] h-[1px] mt-1" style={{ backgroundColor: '#FAFAFA' }}></div>
-
-
-
 </button>
 
 
@@ -129,7 +116,6 @@ const MainContent = () => {
         </div>
       </div>
 
-      {/* Slider dots */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {data.map((_, index) => (
           <button

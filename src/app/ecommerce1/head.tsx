@@ -1,22 +1,34 @@
-import { useWorkspaceStore } from "@/store/workspaceStore";
+"use client";
 
+import { useWorkspaceStore } from "@/store/workspaceStore";
+import { useCategoryStore } from "@/store/categoriesStore";
 
 export default function Head() {
   const workspace = useWorkspaceStore((state) => state.workspace);
+  const { categories } = useCategoryStore();
 
   const siteName = workspace?.name || "My Ecommerce Store";
-  const description =
+  const defaultDescription =
     workspace?.basic_info?.description || "Shop best products online";
   const url = workspace?.domain_info?.domain || "https://example.com";
   const imageUrl =
     workspace?.image ||
     "https://th.bing.com/th/id/R.7fe3baa7d14308d15d0a46180d460949?rik=KnMDMWpoV%2fy82Q&riu=http%3a%2f%2fpluspng.com%2fimg-png%2ffavicon-png-favicon-1024.png&ehk=%2bqV5vS87IkGxoQ9CGodbGHtJdQuFWcL1ZerjusSBDCE%3d&risl=&pid=ImgRaw&r=0";
 
+  const firstCategory = categories && categories.length > 0 ? categories[0] : null;
+  const description = firstCategory
+    ? `Explore our ${firstCategory.name} products. ${firstCategory.description || defaultDescription}`
+    : defaultDescription;
+
+  const keywords = categories
+    ? categories.map((cat) => cat.name).join(", ")
+    : "ecommerce, shop, online store, products";
+
   return (
     <>
       <title>{siteName}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content="ecommerce, shop, online store, products" />
+      <meta name="keywords" content={keywords} />
       <meta name="author" content={siteName} />
 
       {/* Open Graph */}

@@ -1,29 +1,11 @@
 
+import { Category } from "@/app/types/types";
 import { ChevronRightIcon } from "lucide-react";
-
-interface Category {
-  _id: string;
-  name: string;
-  parentId?: string;
-  level: number;
-  children?: Category[];
-  image?: string;
-  code?: string;
-  description?: string;
-  status?: string;
-  path?: string;
-  workspace_id?: string;
-  created_by?: string;
-}
-
 interface Props {
-  categoryTree: Category[]; // ✅ Add this
+  categoryTree: Category[]; 
 }
-
-// Recursive component
 const SidebarItem = ({ category }: { category: Category }) => {
   const hasChildren = category.children && category.children.length > 0;
-
   return (
     <li className="relative group">
       <a
@@ -35,7 +17,6 @@ const SidebarItem = ({ category }: { category: Category }) => {
           <ChevronRightIcon className="h-4 w-4 text-gray-400 group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" />
         )}
       </a>
-
       {hasChildren && (
         <div className="hidden group-hover:block absolute left-full top-0 w-64 bg-white border border-gray-200 shadow-lg py-2">
           <ul className="list-none m-0 p-0">

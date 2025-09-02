@@ -1,32 +1,22 @@
 'use client'; 
 import { useState, useRef } from 'react';
-import { ArrowLeft, ArrowRight, CameraIcon, ClockIcon, HeadphonesIcon, PlayIcon } from 'lucide-react';
-import {  ComputerDesktopIcon, DevicePhoneMobileIcon } from '@heroicons/react/16/solid';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { Category } from '@/app/types/types';
 
-const categories = [
-  { name: 'Phones', icon: <DevicePhoneMobileIcon className="h-12 w-12 mx-auto " /> },
-  { name: 'Computers', icon: <ComputerDesktopIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'SmartWatch', icon: <ClockIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'Camera', icon: <CameraIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'HeadPhones', icon: <HeadphonesIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'Gaming', icon: <PlayIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'Electronics', icon: <ComputerDesktopIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'Home & Lifestyle', icon: <ComputerDesktopIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'Medicine', icon: <ComputerDesktopIcon className="h-12 w-12 mx-auto" /> },
-  { name: 'Sports & Outdoor', icon: <ComputerDesktopIcon className="h-12 w-12 mx-auto" /> },
-  { name: "Baby's & Toys", icon: <ComputerDesktopIcon className="h-12 w-12 mx-auto" /> },
-];
+interface BrowseByCategoryProps {
+  categories?: Category[];
+}
 
-const BrowseByCategory = () => {
+const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollLeft += scrollOffset;
-      setTimeout(() => {
-        updateScrollState();
-      }, 300); 
+      setTimeout(updateScrollState, 300);
     }
   };
 
@@ -53,18 +43,14 @@ const BrowseByCategory = () => {
           <button
             onClick={() => scroll(-300)}
             disabled={!canScrollLeft}
-            className={`p-2 rounded-full transition-colors ${
-              canScrollLeft ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer' : 'bg-gray-100 cursor-not-allowed'
-            }`}
+            className={`p-2 rounded-full transition-colors ${canScrollLeft ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer' : 'bg-gray-100 cursor-not-allowed'}`}
           >
             <ArrowLeft className="h-6 w-6 text-black" />
           </button>
           <button
             onClick={() => scroll(300)}
             disabled={!canScrollRight}
-            className={`p-2 rounded-full transition-colors ${
-              canScrollRight ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer' : 'bg-gray-100 cursor-not-allowed'
-            }`}
+            className={`p-2 rounded-full transition-colors ${canScrollRight ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer' : 'bg-gray-100 cursor-not-allowed'}`}
           >
             <ArrowRight className="h-6 w-6 text-black" />
           </button>
@@ -72,24 +58,30 @@ const BrowseByCategory = () => {
       </div>
 
       {/* Categories Grid (with horizontal scroll) */}
-   <div
-  ref={scrollContainerRef}
-  onScroll={updateScrollState}
-  className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4"
->
-  {categories.map((category, index) => (
-    <div
-      key={index}
-      className="flex-shrink-0 w-[170px] snap-center p-6 border border-gray-300 rounded-md text-center cursor-pointer hover:bg-[#DB4444] hover:text-white hover:border-[#DB4444] transition-colors duration-300"
-    >
-      <div className="flex items-center justify-center font-semibold">
-        {category.icon}
+      <div
+        ref={scrollContainerRef}
+        onScroll={updateScrollState}
+        className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4"
+      >
+        {categories.map((category) => (
+          <div
+            key={category._id}
+            className="flex-shrink-0 w-[170px] snap-center p-6 border border-gray-300 rounded-md text-center cursor-pointer hover:bg-[#DB4444] hover:text-white hover:border-[#DB4444] transition-colors duration-300"
+          >
+            <div className="flex items-center justify-center font-semibold h-24 w-full relative">
+              {category.image && (
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  className="object-contain"
+                />
+              )}
+            </div>
+            <p className="mt-5 text-lg">{category.name}</p>
+          </div>
+        ))}
       </div>
-      <p className="mt-5 text-lg">{category.name}</p>
-    </div>
-  ))}
-</div>
-
     </div>
   );
 };

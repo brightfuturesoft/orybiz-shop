@@ -1,8 +1,9 @@
-import { AppDataType } from "@/app/context/AppDataContext";
+
+import { TWorkSpace } from "@/app/types/types";
 import { create } from "zustand";
 
 type WorkspaceState = {
-  workspace: AppDataType | null;
+  workspace: TWorkSpace | null;
   loading: boolean;
   error: string | null;
   fetchWorkspace: () => Promise<void>;
@@ -17,7 +18,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
     try {
       const res = await fetch(`/api/workspace`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch workspace");
-      const data: AppDataType = await res.json();
+      const data: TWorkSpace = await res.json();
       set({ workspace: data, loading: false, error: null });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

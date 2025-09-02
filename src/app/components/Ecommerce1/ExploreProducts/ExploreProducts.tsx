@@ -2,80 +2,14 @@
 import { useState, useRef } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Product } from '@/app/types/product';
+
+interface ExploreProductProps {
+  products: Product[]; 
+}
 
 
-// Hard-coded data for all products
-const allProducts = [
-  {
-    name: 'Breed Dry Dog Food',
-    price: 100,
-    rating: 4,
-    reviews: 35,
-    image: '/products/ideapad-gaming-3i-01-500x500 1.png', 
-  },
-  {
-    name: 'CANON EOS DSLR Camera',
-    price: 360,
-    originalPrice: 500,
-    rating: 5,
-    reviews: 95,
-    image: '/products/Copa_Sense 1.png',
-  },
-  {
-    name: 'ASUS FHD Gaming Laptop',
-    price: 700,
-    originalPrice: 1000,
-    rating: 4.5,
-    reviews: 325,
-    image: '/products/GP11_PRD3 1.png',
-  },
-  {
-    name: 'Curology Product Set',
-    price: 500,
-    rating: 4,
-    reviews: 145,
-    image: '/products/New-Mercedes-Benz-Gtr-Licensed-Ride-on-Car-Kids-Electric-Toy-Car 1.png',
-  },
-  {
-    name: 'Kids Electric Car',
-    price: 960,
-    rating: 5,
-    reviews: 65,
-    image: '/products/New-Mercedes-Benz-Gtr-Licensed-Ride-on-Car-Kids-Electric-Toy-Car 1.png',
-    isNew: true,
-    colors: ['#DB4444', '#000000'],
-  },
-  {
-    name: 'Jr. Zoom Soccer Cleats',
-    price: 1160,
-    rating: 4,
-    reviews: 35,
-    image: '/products/698717_Z8A1X_3475_001_100_0000_Light-Reversible-quilted-satin-jacket 1.png',
-    isNew: true,
-    colors: ['#000000', '#DB4444'],
-  },
-  {
-    name: 'GP11 Shooter USB Gamepad',
-    price: 660,
-    originalPrice: 800,
-    rating: 4.5,
-    reviews: 55,
-    image: '/products/ideapad-gaming-3i-01-500x500 1.png',
-    isNew: true,
-    colors: ['#DB4444', '#000000'],
-  },
-  {
-    name: 'Quilted Satin Jacket',
-    price: 660,
-    rating: 4.5,
-    reviews: 55,
-    image: '/products/Copa_Sense 1.png',
-    colors: ['#3A3C42', '#DB4444'],
-  },
-];
-
-
-const ExploreProducts = () => {
+const ExploreProducts: React.FC<ExploreProductProps> = ({products}) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -138,7 +72,7 @@ const ExploreProducts = () => {
         onScroll={updateScrollState}
         className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4 "
       >
-        {allProducts.map((product, index) => (
+        {products.map((product, index) => (
           <ProductCard key={index} product={product} />
         ))}
       </div>

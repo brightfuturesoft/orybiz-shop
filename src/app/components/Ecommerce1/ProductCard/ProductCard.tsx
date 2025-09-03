@@ -48,9 +48,9 @@ const handleAddToWishlist = () => {
           <Image
             src={product.attachments?.[0]}
             alt={product.item_name}
-            width={150}
-            height={150}
-            className="transition-transform duration-300 group-hover:scale-110"
+            width={200}
+            height={200}
+            className="transition-transform duration-300 group-hover:scale-110 object-fill w-56 h-52 rounded-md"
           />
           {/* Hover Actions */}
           <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">

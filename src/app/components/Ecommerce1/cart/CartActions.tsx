@@ -16,8 +16,26 @@ export default function CartActions({ onUpdateCart }: CartActionsProps) {
   };
 
   return (
-    <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
-      <input
+    <div className="mt-8 ">
+
+      <div className="flex justify-between mb-5">
+              <button
+        onClick={onUpdateCart}
+        className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-md cursor-pointer text-gray-700 hover:bg-gray-200 transition-colors"
+      >
+        Update Cart
+      </button>
+      <Link
+        href="/"
+        className="w-full sm:w-auto text-center px-6 py-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 transition-colors"
+      >
+        Return To Shop
+      </Link>
+      </div>
+
+
+      <div className="flex gap-5">
+ <input
         type="text"
         placeholder="Coupon Code"
         value={couponCode}
@@ -30,18 +48,9 @@ export default function CartActions({ onUpdateCart }: CartActionsProps) {
       >
         Apply Coupon
       </button>
-      <button
-        onClick={onUpdateCart}
-        className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-md cursor-pointer text-gray-700 hover:bg-gray-200 transition-colors"
-      >
-        Update Cart
-      </button>
-      <Link
-        href="/"
-        className="w-full sm:w-auto text-center px-6 py-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-200 transition-colors"
-      >
-        Return To Shop
-      </Link>
+      </div>
+     
+
     </div>
   );
 }

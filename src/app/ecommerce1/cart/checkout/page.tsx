@@ -5,10 +5,13 @@ import { BillingDetails, CartItem } from "@/app/types/checkout"
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/loginStore"
+import { useWorkspaceStore } from "@/store/workspaceStore"
 
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const workspace = useWorkspaceStore((state) => state.workspace);
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [billingDetails, setBillingDetails] = useState<BillingDetails>({
     firstName: "",
@@ -24,6 +27,7 @@ export default function CheckoutPage() {
   const [couponCode, setCouponCode] = useState("")
   const [discount, setDiscount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
+  const storeUser = useAuthStore.getState().user;
 
   useEffect(() => {
     const savedCart = localStorage.getItem("cart")
@@ -57,20 +61,76 @@ export default function CheckoutPage() {
     }
   }
 
- const handlePlaceOrder = () => {
+const handlePlaceOrder = async () => {
   const required = ["firstName", "streetAddress", "townCity", "phoneNumber", "emailAddress"];
   const missing = required.filter((f) => !billingDetails[f as keyof BillingDetails]);
   if (missing.length) return toast.error(`Please fill in: ${missing.join(", ")}`);
   if (!cartItems.length) return toast.error("Your cart is empty!");
   setIsLoading(true);
-  setTimeout(() => {
+
+  try {
+    const orderPayload = {
+      order_type: "ecommerce",
+      user_id: storeUser?._id,
+      workspace_name:workspace?.name,
+      workspace_id: storeUser?.workspace_id,
+      products: cartItems.map((item) => ({
+        product_id: item._id,
+        product_name: item.item_name,
+        sku: item.sku || "",
+        quantity: item.quantity,
+        order_price: parseFloat(item.selling_price),
+        variation: item.variation || [],
+      })),
+      delivery_address: {
+        full_name: billingDetails.firstName,
+        phone_number: billingDetails.phoneNumber,
+        street: billingDetails.streetAddress,
+        city: billingDetails.townCity,
+        state: billingDetails.streetAddress || "", 
+        postal_code: "", 
+        country: "", 
+      },
+      shipping_charge: 0, 
+      tax_amount: 0, 
+      discount,
+      total_amount: cartItems.reduce((total, item) => total + parseFloat(item.selling_price) * item.quantity, 0) - discount,
+      promo: {
+        used: discount > 0,
+        promo_id: null, 
+        discount_amount: discount
+      },
+      payment: {
+        method: paymentMethod,
+        transaction_id: "", 
+        status: "pending"
+      },
+      order_status: "pending",
+      tracking: [],
+    };
+
+    const res = await fetch("/api/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderPayload),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Order failed");
+    }
+
     toast.success("Order placed successfully!");
     localStorage.removeItem("cart");
     window.dispatchEvent(new Event("cartUpdated"));
     setCartItems([]);
+    router.push("/ecommerce1");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    toast.error(err.message || "Something went wrong");
+  } finally {
     setIsLoading(false);
-    router.push("/ecommerce1"); 
-  }, 2000);
+  }
 };
 
   return (

@@ -1,23 +1,26 @@
 'use client';
 
 import { Heart, Menu, Search, ShoppingCart, User } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react"; // 🆕 useRef import
 import MobileMenu from "../MobileMenu/MobileMenu";
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { TWorkSpace } from "@/app/types/types";
 import Skeleton from "@/app/ui/LogoSkeleton/LogoSkeleton";
 import Link from 'next/link';
+import AccountMenu from "../AccountMenu/AccountMenu";
 
 export interface NavbarProps {
-  workspace: TWorkSpace | null; 
-  loading?: boolean; 
+  workspace: TWorkSpace | null;
+  loading?: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ workspace, loading }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0); 
-  const [wishlistCount, setWishlistCount] = useState(0); // 🆕 Wishlist Count
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const accountMenuRef = useRef<HTMLDivElement>(null); // 🆕 Ref for the account menu container
   const pathname = usePathname();
 
   const links = [
@@ -35,10 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({ workspace, loading }) => {
       setWishlistCount(wishlist.length);
     };
 
-    // Initial load
     updateCounts();
-
-    // Listen to custom events
     window.addEventListener("cartUpdated", updateCounts);
     window.addEventListener("wishlistUpdated", updateCounts);
 
@@ -47,6 +47,32 @@ const Navbar: React.FC<NavbarProps> = ({ workspace, loading }) => {
       window.removeEventListener("wishlistUpdated", updateCounts);
     };
   }, []);
+
+  // 🆕 useEffect to handle outside clicks
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      // Check if the click is outside the menu and the user icon
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsAccountMenuOpen(false);
+      }
+    };
+
+    if (isAccountMenuOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [isAccountMenuOpen]);
+
+  const toggleAccountMenu = () => {
+    setIsAccountMenuOpen(!isAccountMenuOpen);
+  };
 
   return (
     <header className="sticky top-0 z-50 py-3 w-full border-b border-gray-300 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/60">
@@ -132,22 +158,17 @@ const Navbar: React.FC<NavbarProps> = ({ workspace, loading }) => {
                 )}
               </div>
 
-              {/* 👤 User */}
-              <button className="p-2 rounded-md hover:bg-gray-100 transition-colors hidden lg:flex items-center justify-center">
-                <User className="h-6 w-6" />
-              </button>
-
               {/* 🛒 Cart with Tooltip */}
               <div className="relative group">
-                <button  className="relative cursor-pointer p-2 rounded-md hover:bg-gray-100 transition-colors">
-                <Link href={"/ecommerce1/cart"}>
-                  <ShoppingCart className="h-6 w-6" />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
+                <button className="relative cursor-pointer p-2 rounded-md hover:bg-gray-100 transition-colors">
+                  <Link href={"/ecommerce1/cart"}>
+                    <ShoppingCart className="h-6 w-6" />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
                 </button>
                 {cartCount > 0 && (
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
@@ -155,11 +176,24 @@ const Navbar: React.FC<NavbarProps> = ({ workspace, loading }) => {
                   </div>
                 )}
               </div>
+
+                 {/* 👤 User with dropdown menu */}
+              <div className="relative" ref={accountMenuRef}> {/* 🆕 Ref attached here */}
+                <button
+                  onClick={toggleAccountMenu}
+                  className="p-2 rounded-md hover:bg-gray-100 transition-colors hidden lg:flex items-center justify-center"
+                >
+                  <User className="h-6 w-6 cursor-pointer" />
+                </button>
+                {isAccountMenuOpen && <AccountMenu onClose={() => setIsAccountMenuOpen(false)} />}
+              </div>
+
+
+
             </div>
           </div>
         </div>
       </div>
-
       <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </header>
   );

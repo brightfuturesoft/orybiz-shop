@@ -54,7 +54,6 @@ export default function Cart() {
    const handleProceedToCheckout = async () => {
     if (!store_user) return toast.error("Please login first to proceed to checkout");
     if (!cartItems.length) return toast.error("Your cart is empty!");
-
     setIsPosting(true);
   const filteredCart = cartItems.map(item => ({
   product_id: item._id,
@@ -67,7 +66,6 @@ export default function Cart() {
   order_price: parseFloat(item.selling_price),
   cover_photo: item.variants?.[0]?.cover_photo || item.attachments?.[0] || "",
 }));
-
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -80,8 +78,12 @@ export default function Cart() {
         throw new Error(data.error || "Failed to save cart");
       }
 
+      if (res.ok) {
       toast.success("Cart saved successfully!");
       router.push("/ecommerce1/cart/checkout");
+      }
+
+     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");

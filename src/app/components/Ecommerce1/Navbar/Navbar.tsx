@@ -27,16 +27,13 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
   const accountMenuRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
   const storeUser = useAuthStore((state) => state.user);
 
-  // ✅ Load user from cookie or Zustand on mount
  useEffect(() => {
     if (storeUser) {
       setUser(storeUser);
       return;
     }
-    // only client-side
     if (typeof window === "undefined") return;
     const cookies = document.cookie.split("; ");
     const userCookie = cookies.find((c) => c.endsWith(".user_info"));
@@ -51,7 +48,6 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
     }
   }, [storeUser]);
 
-  // Cart & Wishlist counts
   useEffect(() => {
     const updateCounts = () => {
       setCartCount(JSON.parse(localStorage.getItem("cart") || "[]").length);
@@ -66,7 +62,6 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
     };
   }, []);
 
-  // Close account menu on outside click
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (accountMenuRef.current && !accountMenuRef.current.contains(e.target as Node)) {
@@ -78,7 +73,6 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
   }, [isAccountMenuOpen]);
 
   const toggleAccountMenu = () => setIsAccountMenuOpen(!isAccountMenuOpen);
-
   const links = [
     { label: "Home", href: "/" },
     { label: "Contact", href: "/ecommerce1/contact" },
@@ -125,10 +119,13 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
             <div className="flex items-center space-x-2">
               {/* Wishlist */}
               <div className="relative group">
-                <Heart className="h-6 w-6" />
-                {wishlistCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">{wishlistCount}</span>}
-              </div>
 
+                <Link href="/ecommerce1/wishlist">
+                  <Heart className="h-6 w-6" />
+                {wishlistCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">{wishlistCount}</span>}
+                
+                </Link>
+              </div>
               {/* Cart */}
               <div className="relative group">
                 <Link href="/ecommerce1/cart">

@@ -16,22 +16,20 @@ export async function POST(req: NextRequest) {
     }
     const { client } = await connectToDatabase();
     const db = client.db("ecommerce");
-    const existingUser = await db.collection("users").findOne({ email });
-    if (existingUser) {
+    const existing_user = await db.collection("users").findOne({ email });
+    if (existing_user) {
       return NextResponse.json(
         { error: "User with this email already exists" },
         { status: 400 }
       );
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Insert new user
+    const hashed_password = await bcrypt.hash(password, 12);
     const result = await db.collection("users").insertOne({
       full_name,
       email,
-      password: hashedPassword,
+      password: hashed_password,
       phone_number: "",
       user_type: "ecommerce",
       profile_picture: "",

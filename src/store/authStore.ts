@@ -34,7 +34,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || "Signup failed");
-
       set({ user: { _id: result.userId, full_name: data.full_name, email: data.email, workspace_id: data.workspace_id || null } });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

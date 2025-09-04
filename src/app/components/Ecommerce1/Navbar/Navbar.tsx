@@ -11,6 +11,7 @@ import Skeleton from "@/app/ui/LogoSkeleton/LogoSkeleton";
 import { TWorkSpace } from "@/app/types/types";
 import { useAuthStore } from "@/store/loginStore";
 import CryptoJS from "crypto-js";
+import { useUserStore } from "@/store/userStore";
 
 const SECRET_KEY = "bright-erp-secret";
 
@@ -25,28 +26,10 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, setUser] = useState<any>(null);
+    const { user, error, fetchUser } = useUserStore();
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const storeUser = useAuthStore((state) => state.user);
 
- useEffect(() => {
-    if (storeUser) {
-      setUser(storeUser);
-      return;
-    }
-    if (typeof window === "undefined") return;
-    const cookies = document.cookie.split("; ");
-    const userCookie = cookies.find((c) => c.endsWith(".user_info"));
-    if (!userCookie) return;
-    const value = userCookie.split("=")[1];
-    try {
-      const bytes = CryptoJS.AES.decrypt(value, SECRET_KEY);
-      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-      setUser(JSON.parse(decrypted));
-    } catch (err) {
-      console.error("Cookie decryption failed", err);
-    }
-  }, [storeUser]);
 
   useEffect(() => {
     const updateCounts = () => {

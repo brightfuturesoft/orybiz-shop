@@ -6,8 +6,6 @@ import bcrypt from "bcryptjs";
 export async function POST(req: NextRequest) {
   try {
     const { full_name, email, password, workspace_id } = await req.json();
-
-    // Required field validation
     if (!full_name || !email || !password) {
       return NextResponse.json(
         { error: "Name, email, and password are required" },
@@ -23,8 +21,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
-
     const hashed_password = await bcrypt.hash(password, 12);
     const result = await db.collection("users").insertOne({
       full_name,
@@ -37,7 +33,6 @@ export async function POST(req: NextRequest) {
       created_at: new Date(),
       updated_at: new Date(),
     });
-
     return NextResponse.json(
       { message: "User created successfully", userId: result.insertedId },
       { status: 201 }

@@ -1,7 +1,8 @@
 // src/app/page.tsx
 import React from 'react';
 import Image from 'next/image';
-import { StatsSection } from '@/app/components/Ecommerce1';
+import { FeatureSection, StatsSection } from '@/app/components/Ecommerce1';
+import TeamSlider from '@/app/components/Ecommerce1/about/ProfileCarousel';
 
 const AboutPage: React.FC = () => {
   return (
@@ -56,6 +57,8 @@ const AboutPage: React.FC = () => {
       </div>
 
       <StatsSection/>
+      <TeamSlider/>
+      <FeatureSection/>
 
     </div>
   );

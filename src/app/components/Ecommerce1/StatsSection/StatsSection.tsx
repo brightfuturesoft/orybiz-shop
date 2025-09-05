@@ -1,3 +1,4 @@
+import { ShieldCheckIcon } from 'lucide-react';
 import React from 'react';
 
 const StatsSection: React.FC = () => {
@@ -20,14 +21,9 @@ const StatsSection: React.FC = () => {
     {
       value: "33k",
       description: "Monthly Product Sale",
-      icon: (
-  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" className='text-black'>
-  <path d="M20.0003 37.2728C29.5397 37.2728 37.273 29.5395 37.273 20C37.273 10.4606 29.5397 2.72729 20.0003 2.72729C10.4608 2.72729 2.72754 10.4606 2.72754 20C2.72754 29.5395 10.4608 37.2728 20.0003 37.2728Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M25.0914 14.547C24.762 13.9758 24.2834 13.505 23.707 13.1848C23.1305 12.8646 22.4777 12.7072 21.8186 12.7294H18.1823C17.2178 12.7294 16.2929 13.1124 15.611 13.7941C14.929 14.4759 14.5459 15.4005 14.5459 16.3647C14.5459 17.3288 14.929 18.2535 15.611 18.9353C16.2929 19.617 17.2178 20 18.1823 20H21.8186C22.783 20 23.708 20.383 24.3899 21.0648C25.0719 21.7465 25.455 22.6712 25.455 23.6354C25.455 24.5995 25.0719 25.5242 24.3899 26.2059C23.708 26.8877 22.783 27.2707 21.8186 27.2707H18.1823C17.5232 27.2929 16.8704 27.1354 16.2939 26.8153C15.7174 26.4951 15.2389 26.0242 14.9095 25.453" stroke="black" stroke-width="2.75" strokeLinecap="round" stroke-linejoin="round"/>
-  <path d="M20 8.18176V12.1212M20 27.8787V31.8181" stroke="black" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-      ),
-      isHighlighted: true,
+   icon: <ShieldCheckIcon className="h-6 w-6 md:h-8 md:w-8 text-white" />,
+    
+      isHighlighted: false,
     },
     {
       value: "45.5k",
@@ -53,7 +49,7 @@ const StatsSection: React.FC = () => {
   ];
 
   return (
-    <div className="bg-black py-12">
+    <div className=" py-12">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
           {stats.map((stat, index) => (
@@ -61,22 +57,19 @@ const StatsSection: React.FC = () => {
               key={index}
               className={`flex flex-col items-center justify-center rounded-lg border p-8 text-center transition-shadow duration-300
                 ${stat.isHighlighted
-                  ? 'border-red-500 bg-red-500 text-black shadow-xl'
-                  : 'border-gray-200 bg-black text-gray-800 shadow-md hover:shadow-lg'
+                  ? 'border-red-500 bg-red-500 text-white  shadow-xl'
+                  : 'border-gray-200  text-white  shadow-md hover:shadow-lg'
                 }`}
             >
               <div
-                className={`flex h-16 w-16 items-center justify-center rounded-full bg-black
-                  ${stat.isHighlighted
-                    ? 'bg-black text-black '
-                    : 'bg-black text-gray-800'
-                  }`}
+                className={`flex h-16 w-16 items-center justify-center rounded-full bg-black text-white `}
+                
               >
                 {stat.icon}
               </div>
               <p
                 className={`mt-4 text-2xl font-bold lg:text-3xl
-                  ${stat.isHighlighted ? 'text-white ' : 'text-gray-900'}`}
+                  ${stat.isHighlighted ? 'text-white  ' : 'text-gray-900'}`}
               >
                 {stat.value}
               </p>

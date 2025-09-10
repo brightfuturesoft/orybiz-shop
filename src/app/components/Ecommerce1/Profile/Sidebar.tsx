@@ -11,6 +11,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection }) =>
   const accountSections = ["My Profile", "Address Book", "My Payment Options"]
   const orderSections = ["My Returns", "My Cancellations"]
   const wishlistSection = "My Wishlist"
+  const manageAccountSection = "Manage My Account"
 
   const renderButton = (name: string) => (
     <button
@@ -27,7 +28,14 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection }) =>
   return (
     <div className="w-full lg:w-64 bg-white border-r border-gray-200 p-4 lg:p-6 space-y-6">
       <div>
-        <h3 className="text-base font-medium text-gray-900 mb-3">Manage My Account</h3>
+        <h3
+          onClick={() => setActiveSection(manageAccountSection)}
+          className={`text-base font-medium mb-3 cursor-pointer ${
+            activeSection === manageAccountSection ? "text-red-500" : "text-gray-900"
+          }`}
+        >
+          Manage My Account
+        </h3>
         <div className="space-y-2">{accountSections.map(renderButton)}</div>
       </div>
       <div>

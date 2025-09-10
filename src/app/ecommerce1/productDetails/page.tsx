@@ -91,7 +91,7 @@ const RatingFilter: React.FC<RatingFilterProps> = ({ rating, selected, onClick }
 export default function ProductListingPage() {
   const searchParams = useSearchParams()
   const query = searchParams.get("query") || ""
-
+  const categoryParam = searchParams.get("category") || "";
   const workspace = useWorkspaceStore((state) => state.workspace)
   const { categories: fetchedCategories, fetchCategories } = useCategoryStore()
   const { products: fetchedProducts, fetchProducts } = useProductStore()
@@ -108,6 +108,20 @@ export default function ProductListingPage() {
 
   const router = useRouter()
 
+    const getCategoryNameById = (id: string) => {
+    const category = fetchedCategories?.find((cat) => cat._id === id);
+    return category ? category.name : "";
+  };
+
+  // Sync state with URL parameter on mount
+  useEffect(() => {
+    if (categoryParam) {
+      const categoryName = getCategoryNameById(categoryParam);
+      if (categoryName) {
+        setSelectedCategory(categoryName);
+      }
+    }
+  }, [categoryParam, fetchedCategories]);
   // Fetch Data
   useEffect(() => {
     if (workspace?._id) {
@@ -116,6 +130,9 @@ export default function ProductListingPage() {
       fetchBrands(workspace._id)
     }
   }, [workspace, fetchCategories, fetchProducts, fetchBrands])
+
+
+  
 
   // Build Nested Categories
   const buildNestedCategories = (categories: Category[]): Category[] => {
@@ -332,7 +349,7 @@ export default function ProductListingPage() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 w-80 bg-white border-r border-gray-200 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static inset-y-0 left-0 w-80 bg-white border-r z-50 border-gray-200 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
@@ -465,7 +482,9 @@ export default function ProductListingPage() {
         </div>
 
         {/* Products */}
-        <div className={`grid gap-4 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"}`}>
+        {
+          filteredAndSortedProducts?.length > 0 ? (
+<div className={`grid gap-4 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"}`}>
           {filteredAndSortedProducts.map((product) => (
             <div
               key={product.id}
@@ -478,7 +497,7 @@ export default function ProductListingPage() {
                 <img
                   src={product.image}
                   alt={product.title}
-                  className={`w-full h-48 object-cover transition-transform duration-300 ${
+                  className={`w-full h-48  transition-transform duration-300 ${
                     viewMode === "list" ? "sm:h-48" : "sm:h-56"
                   } hover:scale-105`}
                 />
@@ -537,7 +556,17 @@ export default function ProductListingPage() {
               </div>
             </div>
           ))}
+
+
         </div>
+          ) :  (
+          <div className="text-center py-10">
+            <h2 className="text-2xl font-semibold text-gray-700">No products found</h2>
+            <p className="text-gray-500 mt-2">Try adjusting your filters or clearing them to see more products.</p>
+          </div>
+        )
+        }
+        
       </main>
     </div>
   )

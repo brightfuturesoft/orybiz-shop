@@ -74,8 +74,9 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto ">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
@@ -87,13 +88,18 @@ export default function Cart() {
                 />
               ))
             ) : (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-gray-500 text-lg">
                 Your cart is empty
               </div>
             )}
-            <CartActions onUpdateCart={handleUpdateCart} />
+            {cartItems.length > 0 && (
+              <div className="mt-4">
+                <CartActions onUpdateCart={handleUpdateCart} />
+              </div>
+            )}
           </div>
 
+          {/* Cart Totals */}
           <div className="lg:col-span-1">
             <CartTotals
               isPosting={isPosting}

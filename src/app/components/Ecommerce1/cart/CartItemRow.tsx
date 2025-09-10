@@ -44,7 +44,7 @@ export default function CartItemRow({ item, updateQuantity, removeItem }: CartIt
       </div>
 
       {/* Quantity */}
-      <div className="w-full sm:w-1/5 flex justify-center mb-4 sm:mb-0">
+      <div className="w-full sm:w-1/5 flex justify-center mb-4 sm:mb-0 ">
         <div className="flex items-center border border-gray-300 rounded-md">
           <button
             onClick={() => updateQuantity(item._id, Math.max(1, item.quantity - 1))}

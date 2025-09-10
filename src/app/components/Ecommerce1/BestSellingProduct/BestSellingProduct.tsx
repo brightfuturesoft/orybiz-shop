@@ -1,12 +1,35 @@
 'use client';
+import { useRef, useState } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 import { Product } from '@/app/types/product';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface BestSellingProductProps {
   products: Product[]; 
 }
 
 const BestSellingProduct: React.FC<BestSellingProductProps> = ({ products }) => {
+   const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true);
+  
+    const scroll = (scrollOffset: number) => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollLeft += scrollOffset;
+        setTimeout(() => {
+          updateScrollState();
+        }, 300);
+      }
+    };
+  
+    const updateScrollState = () => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        setCanScrollLeft(scrollLeft > 0);
+        setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+      }
+    };
+  
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Section Header with Navigation */}
@@ -27,10 +50,36 @@ const BestSellingProduct: React.FC<BestSellingProductProps> = ({ products }) => 
           }
           
         </div>
+
+             <div className="flex space-x-2">
+          <button
+            onClick={() => scroll(-300)}
+            disabled={!canScrollLeft}
+            className={`p-2 rounded-full transition-colors ${
+              canScrollLeft ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer' : 'bg-gray-100 cursor-not-allowed'
+            }`}
+          >
+            <ArrowLeft className="h-6 w-6 text-black " />
+          </button>
+          <button
+            onClick={() => scroll(300)}
+            disabled={!canScrollRight}
+            className={`p-2 rounded-full transition-colors ${
+              canScrollRight ? 'bg-gray-200 hover:bg-gray-300 cursor-pointer' : 'bg-gray-100 cursor-not-allowed'
+            }`}
+          >
+            <ArrowRight className="h-6 w-6 text-black" />
+          </button>
+        </div>
+
+
       </div>
 
       {/* Products Grid with Horizontal Scrolling */}
-      <div className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4">
+      <div
+        ref={scrollContainerRef}
+        onScroll={updateScrollState}
+       className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4">
         {products.map((product, index) => (
           <ProductCard key={index} product={product} />
         ))}

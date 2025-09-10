@@ -64,6 +64,7 @@ const ExploreProducts: React.FC<ExploreProductProps> = ({products}) => {
             <ArrowRight className="h-6 w-6 text-black" />
           </button>
         </div>
+        
       </div>
 
       {/* Products Grid with Horizontal Scrolling */}

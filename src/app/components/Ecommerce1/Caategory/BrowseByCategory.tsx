@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { Category } from '@/app/types/types';
+import { useRouter } from 'next/navigation';
 
 interface BrowseByCategoryProps {
   categories?: Category[];
@@ -13,6 +14,7 @@ const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [], lo
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const router = useRouter()
 
   if (!categories.length && !loading) return null; 
   const scroll = (scrollOffset: number) => {
@@ -30,7 +32,14 @@ const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [], lo
     }
   };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleClick = (category:any) => {
+    router.push(`/ecommerce1/productdetails?category=${category._id}`)
+  }
+
   const skeletonArray = Array.from({ length: 6 }); 
+
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -76,6 +85,7 @@ const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [], lo
             ))
           : categories.map((category) => (
               <div
+              onClick={()=>handleClick(category)}
                 key={category._id}
                 className="flex-shrink-0 h-[200px]  w-[170px] snap-center p-6 border border-gray-300 rounded-md text-center cursor-pointer hover:bg-[#DB4444] hover:text-white hover:border-[#DB4444] transition-colors duration-300"
               >

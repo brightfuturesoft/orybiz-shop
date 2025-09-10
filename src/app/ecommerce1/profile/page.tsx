@@ -1,33 +1,20 @@
 "use client"
 
-import ContentPlaceholder from "@/app/components/Ecommerce1/Profile/ContentPlaceholder"
-import ProfileForm from "@/app/components/Ecommerce1/Profile/ProfileForm"
+import ManageAccountPage from "@/app/components/Ecommerce1/MangeAccount/MangeAccount"
+import AddressBookPage from "@/app/components/Ecommerce1/Profile/AddressBookPage"
+import EditProfilePage from "@/app/components/Ecommerce1/Profile/EditProfilePage"
 import Sidebar from "@/app/components/Ecommerce1/Profile/Sidebar"
 import Spinner from "@/app/ui/Spinner/Spinner"
 import { useUserStore } from "@/store/userStore"
 import React, { useEffect, useState } from "react"
 
 export default function AccountPage() {
-  const [activeSection, setActiveSection] = useState("My Profile")
-  const [formData, setFormData] = useState({
-    firstName: "Md",
-    lastName: "Rimel",
-    email: "rimel111@gmail.com",
-    address: "Kingston, 5236, United State",
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  })
-
+  const [activeSection, setActiveSection] = useState("Manage My Account")
   const { user, loading, error, fetchUser } = useUserStore();
-
   useEffect(() => {
     fetchUser(); 
   }, []);
-
   if (loading) return <Spinner message="Loading User"/>;
-
-  // Show a nice centered error if no user
  if (!user || error) {
   return (
     <div className="min-h-screen flex items-center justify-center  px-4">
@@ -73,31 +60,6 @@ export default function AccountPage() {
   );
 }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSaveChanges = () => {
-    if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
-      alert("New passwords do not match!")
-      return
-    }
-    console.log("Saving changes:", formData)
-    alert("Changes saved successfully!")
-  }
-
-  const handleCancel = () => {
-    setFormData({
-      firstName: "Md",
-      lastName: "Rimel",
-      email: "rimel111@gmail.com",
-      address: "Kingston, 5236, United State",
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    })
-  }
 
   return (
     <div className="min-h-screen bg-white container mx-auto my-10">
@@ -120,15 +82,14 @@ export default function AccountPage() {
         <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
 
         <div className="flex-1 p-4 lg:p-8">
-          {activeSection === "My Profile" ? (
-            <ProfileForm
-              formData={user}
-              handleInputChange={handleInputChange}
-              handleSaveChanges={handleSaveChanges}
-              handleCancel={handleCancel}
-            />
-          ) : (
-            <ContentPlaceholder title={activeSection} />
+          {activeSection === "Manage My Account" && (
+            <ManageAccountPage/>
+          )}
+            {activeSection === "My Profile" && (
+            <EditProfilePage/>
+          )}
+            {activeSection === "Address Book" && (
+            <AddressBookPage/>
           )}
         </div>
       </div>

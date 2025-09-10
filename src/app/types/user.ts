@@ -4,4 +4,5 @@ export interface AuthUser {
   full_name: string;
   email: string;
   workspace_id?: string | null;
+  phone_number?:string
 }

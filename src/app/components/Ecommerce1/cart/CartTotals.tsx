@@ -1,12 +1,10 @@
 "use client";
 
-
 interface CartTotalsProps {
   subtotal: number;
   total: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handleProceedToCheckout:any;
-  isPosting:boolean;
+  handleProceedToCheckout: () => void;
+  isPosting: boolean;
 }
 
 export default function CartTotals({ subtotal, total, handleProceedToCheckout, isPosting }: CartTotalsProps) {
@@ -27,13 +25,13 @@ export default function CartTotals({ subtotal, total, handleProceedToCheckout, i
           <span>${total.toFixed(2)}</span>
         </div>
       </div>
-     <button
-                onClick={handleProceedToCheckout}
-                disabled={isPosting}
-                className="w-full mt-6 py-3 bg-red-500 text-white cursor-pointer hover:bg-red-600 transition-colors block text-center rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                {isPosting ? "Saving..." : "Proceed to Checkout"}
-              </button>
+      <button
+        onClick={handleProceedToCheckout}
+        disabled={isPosting}
+        className="w-full mt-6 py-3 bg-red-500 text-white cursor-pointer hover:bg-red-600 transition-colors block text-center rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
+        {isPosting ? "Saving..." : "Proceed to Checkout"}
+      </button>
     </div>
   );
 }

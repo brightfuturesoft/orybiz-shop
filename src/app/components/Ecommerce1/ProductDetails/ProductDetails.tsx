@@ -3,27 +3,33 @@
 import { useState } from "react"
 import Image from "next/image"
 
-export default function ProductPage() {
-  const [selectedColor, setSelectedColor] = useState("white")
-  const [selectedSize, setSelectedSize] = useState("M")
-  const [quantity, setQuantity] = useState(2)
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+interface Variant {
+  color: string
+  size: string
+  quantity: number
+  normal_price: number
+  offer_price: number
+  product_cost: number
+  cover_photo: string[]
+}
+
+interface Product {
+  item_name: string
+  item_description: string
+  item_long_description: string
+  variants: Variant[]
+}
+
+interface Props {
+  product: Product
+}
+
+export default function ProductPage({ product }: Props) {
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0)
+  const [quantity, setQuantity] = useState(1)
   const [showAddedToCart, setShowAddedToCart] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
-
-  const colors = [
-    { name: "white", value: "#ffffff", border: "#e5e7eb" },
-    { name: "red", value: "#ef4444", border: "#ef4444" },
-  ]
-
-  const sizes = ["XS", "S", "M", "L", "XL"]
-
-  const productImages = [
-    "/white-gaming-controller-front-view.png",
-    "/white-gaming-controller-side-view.png",
-    "/white-gaming-controller-back-view.png",
-    "/white-gaming-controller-angle-view.png",
-  ]
+  const selectedVariant = product.variants[selectedVariantIndex]
 
   const handleAddToCart = () => {
     setShowAddedToCart(true)
@@ -46,9 +52,9 @@ export default function ProductPage() {
       <div className="px-4 py-4 text-sm text-gray-500">
         <span className="hover:text-gray-700 cursor-pointer">Account</span>
         <span className="mx-2">/</span>
-        <span className="hover:text-gray-700 cursor-pointer">Gaming</span>
+        <span className="hover:text-gray-700 cursor-pointer">Electronics</span>
         <span className="mx-2">/</span>
-        <span className="text-black">Havic HV G-92 Gamepad</span>
+        <span className="text-black">{product.item_name}</span>
       </div>
 
       <div className="px-4 py-8">
@@ -58,19 +64,19 @@ export default function ProductPage() {
             <div className="flex gap-4">
               {/* Thumbnail Images */}
               <div className="flex flex-col gap-4">
-                {productImages.slice(1).map((image, index) => (
+                {selectedVariant.cover_photo.slice(1).map((img, index) => (
                   <div
                     key={index}
-                    onClick={() => setSelectedImageIndex(index + 1)}
+                    onClick={() => setSelectedVariantIndex(index + 1)}
                     className={`w-20 h-20 bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
-                      selectedImageIndex === index + 1
+                      selectedVariantIndex === index + 1
                         ? "ring-2 ring-red-500 ring-offset-2"
                         : "hover:ring-2 hover:ring-gray-300"
                     }`}
                   >
                     <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`Product view ${index + 2}`}
+                      src={img || "/placeholder.svg"}
+                      alt={`Variant ${index + 2}`}
                       width={80}
                       height={80}
                       className="w-full h-full object-cover"
@@ -80,13 +86,10 @@ export default function ProductPage() {
               </div>
 
               {/* Main Image */}
-              <div
-                onClick={() => setSelectedImageIndex(0)}
-                className="flex-1 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:bg-gray-50 transition-colors"
-              >
+              <div className="flex-1 bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:bg-gray-50 transition-colors">
                 <Image
-                  src={productImages[selectedImageIndex] || "/placeholder.svg"}
-                  alt="Havic HV G-92 Gamepad"
+                  src={selectedVariant.cover_photo[0] || "/placeholder.svg"}
+                  alt={product.item_name}
                   width={500}
                   height={500}
                   className="w-full h-full object-cover"
@@ -96,9 +99,8 @@ export default function ProductPage() {
 
             {/* Product Details */}
             <div className="space-y-6">
-              {/* Product Title and Rating */}
               <div>
-                <h1 className="text-2xl font-semibold text-black mb-2">Havic HV G-92 Gamepad</h1>
+                <h1 className="text-2xl font-semibold text-black mb-2">{product.item_name}</h1>
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex text-yellow-400">
                     {[...Array(4)].map((_, i) => (
@@ -111,62 +113,36 @@ export default function ProductPage() {
                     </svg>
                   </div>
                   <span className="text-sm text-gray-500 hover:text-gray-700 cursor-pointer">(150 Reviews)</span>
-                  <span className="text-sm text-green-500 ml-4">In Stock</span>
+                  <span className="text-sm text-green-500 ml-4">{selectedVariant.quantity > 0 ? "In Stock" : "Out of Stock"}</span>
                 </div>
               </div>
 
               {/* Price */}
-              <div className="text-2xl font-normal text-black">$192.00</div>
+              <div className="text-2xl font-normal text-black">${selectedVariant.offer_price}</div>
 
               {/* Description */}
-              <p className="text-sm text-gray-600 leading-relaxed">
-                PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install
-                & mess free removal Pressure sensitive.
-              </p>
+              <div
+                className="text-sm text-gray-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: product.item_long_description }}
+              />
 
               <hr className="border-gray-200" />
 
               {/* Colors */}
               <div>
                 <div className="flex items-center gap-4 mb-3">
-                  <span className="text-lg text-black">Colours:</span>
+                  <span className="text-lg text-black">Colors:</span>
                   <div className="flex gap-2">
-                    {colors.map((color) => (
+                    {product.variants.map((variant, index) => (
                       <button
-                        key={color.name}
-                        onClick={() => setSelectedColor(color.name)}
+                        key={index}
+                        onClick={() => setSelectedVariantIndex(index)}
                         className={`w-5 h-5 rounded-full border-2 transition-all duration-200 hover:scale-110 ${
-                          selectedColor === color.name ? "ring-2 ring-gray-400 ring-offset-2" : ""
+                          selectedVariantIndex === index ? "ring-2 ring-gray-400 ring-offset-2" : ""
                         }`}
-                        style={{
-                          backgroundColor: color.value,
-                          borderColor: color.border,
-                        }}
-                        aria-label={`Select ${color.name} color`}
+                        style={{ backgroundColor: variant.color }}
+                        aria-label={`Select color ${variant.color}`}
                       />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Size */}
-              <div>
-                <div className="flex items-center gap-4 mb-3">
-                  <span className="text-lg text-black">Size:</span>
-                  <div className="flex gap-2">
-                    {sizes.map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`px-3 py-1 text-sm border rounded transition-all duration-200 hover:scale-105 ${
-                          selectedSize === size
-                            ? "bg-red-500 text-white border-red-500"
-                            : "bg-white text-black border-gray-300 hover:border-gray-400"
-                        }`}
-                        aria-label={`Select size ${size}`}
-                      >
-                        {size}
-                      </button>
                     ))}
                   </div>
                 </div>
@@ -223,49 +199,6 @@ export default function ProductPage() {
                     />
                   </svg>
                 </button>
-              </div>
-
-              {/* Delivery Information */}
-              <div className="space-y-4 border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-medium text-black">Free Delivery</div>
-                    <div className="text-sm text-gray-600 underline cursor-pointer hover:text-gray-800 transition-colors">
-                      Enter your postal code for Delivery Availability
-                    </div>
-                  </div>
-                </div>
-
-                <hr className="border-gray-200" />
-
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-medium text-black">Return Delivery</div>
-                    <div className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer transition-colors">
-                      Free 30 Days Delivery Returns. Details
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

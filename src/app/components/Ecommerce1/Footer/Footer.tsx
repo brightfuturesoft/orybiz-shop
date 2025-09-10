@@ -18,8 +18,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Column 1: Exclusive */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold mb-2">{workspace?.name}</h3>
-            <h4 className="font-semibold mb-1">Subscribe</h4>
+         <Link href="/">  <Image
+                  src={workspace?.image || ""}
+                  alt={workspace?.name || "Logo"}
+                  width={150}
+                  height={150}
+                  className="transition-transform duration-300 group-hover:scale-110"
+                /> </Link>
+            <h4 className="font-semibold mb-1 my-2">Subscribe</h4>
             <p className="text-sm text-gray-400">Get 10% off your first order</p>
             <div className="relative">
               <input
@@ -39,28 +45,31 @@ const Footer = () => {
           {/* Column 2: Support */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-2">Support</h3>
-            <p className="text-sm text-gray-400">111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.</p>
-            <p className="text-sm text-gray-400">exclusive@gmail.com</p>
-            <p className="text-sm text-gray-400">+88015-88888-9999</p>
+     <p className="text-sm text-gray-400">
+  {`${workspace?.address_info?.zip_code}, ${workspace?.address_info?.address}, ${workspace?.address_info?.city}, ${workspace?.address_info?.state}, ${workspace?.address_info?.country}.`}
+</p>
+
+            <p className="text-sm text-gray-400">{workspace?.contact_info?.support_email}</p>
+            <p className="text-sm text-gray-400">{workspace?.contact_info?.phone_number[0]}</p>
           </div>
 
           {/* Column 3: Account */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-2">Account</h3>
-            <Link href="/my-account" className="block text-sm text-gray-400 hover:text-white transition-colors">My Account</Link>
-            <Link href="/login" className="block text-sm text-gray-400 hover:text-white transition-colors">Login / Register</Link>
-            <Link href="/cart" className="block text-sm text-gray-400 hover:text-white transition-colors">Cart</Link>
-            <Link href="/wishlist" className="block text-sm text-gray-400 hover:text-white transition-colors">Wishlist</Link>
-            <Link href="/shop" className="block text-sm text-gray-400 hover:text-white transition-colors">Shop</Link>
+            <Link href="/ecommerce1/profile" className="block text-sm text-gray-400 hover:text-white transition-colors">My Account</Link>
+            <Link href="/ecommerce1/signup" className="block text-sm text-gray-400 hover:text-white transition-colors">Login / Register</Link>
+            <Link href="/ecommerce1/cart" className="block text-sm text-gray-400 hover:text-white transition-colors">Cart</Link>
+            <Link href="/ecommerce1/wishlist" className="block text-sm text-gray-400 hover:text-white transition-colors">Wishlist</Link>
+            <Link href="/ecommerce1/shop" className="block text-sm text-gray-400 hover:text-white transition-colors">Shop</Link>
           </div>
 
           {/* Column 4: Quick Link */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-2">Quick Link</h3>
-            <Link href="/privacy-policy" className="block text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="block text-sm text-gray-400 hover:text-white transition-colors">Terms Of Use</Link>
-            <Link href="/faq" className="block text-sm text-gray-400 hover:text-white transition-colors">FAQ</Link>
-            <Link href="/contact" className="block text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
+            <Link href="/ecommerce1/privacy-policy" className="block text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/ecommerce1/terms" className="block text-sm text-gray-400 hover:text-white transition-colors">Terms Of Use</Link>
+            <Link href="/ecommerce1/about" className="block text-sm text-gray-400 hover:text-white transition-colors">About</Link>
+            <Link href="/ecommerce1/contact" className="block text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
           </div>
 
           {/* Column 5: Download App */}

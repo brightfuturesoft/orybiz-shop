@@ -49,8 +49,6 @@ export default function CartActions({ onUpdateCart }: CartActionsProps) {
         Apply Coupon
       </button>
       </div>
-     
-
     </div>
   );
 }

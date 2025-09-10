@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center p-4 sm:p-8">
-      <div className="flex w-full flex-col overflow-hidden md:flex-row">
+      <div className="flex container mx-auto flex-col overflow-hidden md:flex-row">
         {/* Left Section (Image) */}
         <div className="relative hidden w-full rounded-l-xl md:block md:w-1/2">
           <div className="flex h-full items-center">

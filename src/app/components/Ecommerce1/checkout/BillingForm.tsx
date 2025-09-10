@@ -13,22 +13,12 @@ export default function BillingForm({ billingDetails, handleInputChange }: Props
     <div className="space-y-6">
       <div>
         <label className="block text-sm text-gray-700 mb-2">
-          First Name<span className="text-red-500 ml-1">*</span>
+          Full Name<span className="text-red-500 ml-1">*</span>
         </label>
         <input
           type="text"
-          value={billingDetails.firstName}
-          onChange={(e) => handleInputChange("firstName", e.target.value)}
-          className="w-full px-4 py-3 bg-gray-100 border-0 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm text-gray-700 mb-2">Company Name</label>
-        <input
-          type="text"
-          value={billingDetails.companyName}
-          onChange={(e) => handleInputChange("companyName", e.target.value)}
+          value={billingDetails.full_name}
+          onChange={(e) => handleInputChange("full_name", e.target.value)}
           className="w-full px-4 py-3 bg-gray-100 border-0 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
@@ -39,8 +29,8 @@ export default function BillingForm({ billingDetails, handleInputChange }: Props
         </label>
         <input
           type="text"
-          value={billingDetails.streetAddress}
-          onChange={(e) => handleInputChange("streetAddress", e.target.value)}
+          value={billingDetails.street_address}
+          onChange={(e) => handleInputChange("street_address", e.target.value)}
           className="w-full px-4 py-3 bg-gray-100 border-0 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
@@ -61,8 +51,8 @@ export default function BillingForm({ billingDetails, handleInputChange }: Props
         </label>
         <input
           type="text"
-          value={billingDetails.townCity}
-          onChange={(e) => handleInputChange("townCity", e.target.value)}
+          value={billingDetails.town_city}
+          onChange={(e) => handleInputChange("town_city", e.target.value)}
           className="w-full px-4 py-3 bg-gray-100 border-0 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
@@ -73,8 +63,8 @@ export default function BillingForm({ billingDetails, handleInputChange }: Props
         </label>
         <input
           type="tel"
-          value={billingDetails.phoneNumber}
-          onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+          value={billingDetails.phone_number}
+          onChange={(e) => handleInputChange("phone_number", e.target.value)}
           className="w-full px-4 py-3 bg-gray-100 border-0 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
@@ -85,13 +75,13 @@ export default function BillingForm({ billingDetails, handleInputChange }: Props
         </label>
         <input
           type="email"
-          value={billingDetails.emailAddress}
-          onChange={(e) => handleInputChange("emailAddress", e.target.value)}
+          value={billingDetails.email_address}
+          onChange={(e) => handleInputChange("email_address", e.target.value)}
           className="w-full px-4 py-3 bg-gray-100 border-0 rounded-none focus:outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
 
-      <div className="flex items-center space-x-3 pt-4">
+      {/* <div className="flex items-center space-x-3 pt-4">
         <input
           type="checkbox"
           id="save-info"
@@ -99,10 +89,7 @@ export default function BillingForm({ billingDetails, handleInputChange }: Props
           onChange={(e) => handleInputChange("saveInfo", e.target.checked)}
           className="w-4 h-4 text-red-500 bg-red-500 border-red-500 rounded focus:ring-red-500"
         />
-        <label htmlFor="save-info" className="text-sm text-black">
-          Save this information for faster check-out next time
-        </label>
-      </div>
+      </div> */}
     </div>
   )
 }

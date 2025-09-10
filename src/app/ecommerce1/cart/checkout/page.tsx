@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { BillingForm, Breadcrumb, CouponSection, OrderSummary, PaymentMethods } from "@/app/components/Ecommerce1"
@@ -14,14 +15,13 @@ export default function CheckoutPage() {
   const workspace = useWorkspaceStore((state) => state.workspace);
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [billingDetails, setBillingDetails] = useState<BillingDetails>({
-    firstName: "",
-    companyName: "",
-    streetAddress: "",
+    full_name: "",
+    company_name: "",
+    street_address: "",
     apartment: "",
-    townCity: "",
-    phoneNumber: "",
-    emailAddress: "",
-    saveInfo: false,
+    town_city: "",
+    phone_number: "",
+    email_address: "",
   })
   const [paymentMethod, setPaymentMethod] = useState("cod")
   const [couponCode, setCouponCode] = useState("")
@@ -41,7 +41,8 @@ export default function CheckoutPage() {
     }
   }, [])
 
-  const calculateSubtotal = () => cartItems.reduce((total, item) => total + (parseFloat(item.selling_price) || 0) * item.quantity, 0)
+const calculateSubtotal = () =>
+  cartItems.reduce((total, item) => total + (Number(item.order_price) || 0) * item.quantity, 0)
   const subtotal = calculateSubtotal()
   const total = subtotal - discount
 
@@ -62,48 +63,65 @@ export default function CheckoutPage() {
   }
 
 const handlePlaceOrder = async () => {
-  const required = ["firstName", "streetAddress", "townCity", "phoneNumber", "emailAddress"];
+  const required = ["full_name", "street_address", "town_city", "phone_number", "email_address"];
   const missing = required.filter((f) => !billingDetails[f as keyof BillingDetails]);
-  if (missing.length) return toast.error(`Please fill in: ${missing.join(", ")}`);
+  if (!storeUser && missing.length) return toast.error(`Please fill in: ${missing.join(", ")}`);
   if (!cartItems.length) return toast.error("Your cart is empty!");
+
   setIsLoading(true);
 
   try {
+    // Prepare payload for saving cart
+    const payload = cartItems.map((item) => ({
+      product_id: item._id,
+      user_id: storeUser?._id || "",
+      user_name: storeUser?.full_name || billingDetails.full_name,
+      user_email: storeUser?.email || billingDetails.email_address,
+      user_number: billingDetails.phone_number,
+      product_name: item.product_name,
+      sku: item.sku || "",
+      quantity: item.quantity,
+      order_price: item.order_price,
+      variation: item.variation,
+      product_image: item.product_image?.[0] || "/placeholder.svg",
+    }));
+
+    // Save cart silently if user exists or not
+    await fetch("/api/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    // Prepare order payload
     const orderPayload = {
       order_type: "ecommerce",
       user_id: storeUser?._id,
-      workspace_name:workspace?.name,
+      workspace_name: workspace?.name,
       workspace_id: storeUser?.workspace_id,
-      products: cartItems.map((item) => ({
-        product_id: item._id,
-        product_name: item.item_name,
-        sku: item.sku || "",
-        quantity: item.quantity,
-        order_price: parseFloat(item.selling_price),
-        variation: item.variation || [],
-      })),
+      products: payload,
       delivery_address: {
-        full_name: billingDetails.firstName,
-        phone_number: billingDetails.phoneNumber,
-        street: billingDetails.streetAddress,
-        city: billingDetails.townCity,
-        state: billingDetails.streetAddress || "", 
-        postal_code: "", 
-        country: "", 
+        full_name: storeUser?.full_name || billingDetails.full_name,
+        phone_number:  billingDetails.phone_number,
+        street: billingDetails.street_address,
+        city: billingDetails.town_city,
+        state: billingDetails.street_address || "",
+        postal_code: "",
+        country: "",
       },
-      shipping_charge: 0, 
-      tax_amount: 0, 
+      shipping_charge: 0,
+      tax_amount: 0,
       discount,
-      total_amount: cartItems.reduce((total, item) => total + parseFloat(item.selling_price) * item.quantity, 0) - discount,
+      total_amount: subtotal - discount,
       promo: {
         used: discount > 0,
-        promo_id: null, 
-        discount_amount: discount
+        promo_id: null,
+        discount_amount: discount,
       },
       payment: {
         method: paymentMethod,
-        transaction_id: "", 
-        status: "pending"
+        transaction_id: "",
+        status: "pending",
       },
       order_status: "pending",
       tracking: [],
@@ -125,7 +143,6 @@ const handlePlaceOrder = async () => {
     window.dispatchEvent(new Event("cartUpdated"));
     setCartItems([]);
     router.push("/ecommerce1");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     toast.error(err.message || "Something went wrong");
   } finally {
@@ -137,7 +154,7 @@ const handlePlaceOrder = async () => {
     <div className="min-h-screen bg-white">
       <Breadcrumb />
       <div className="px-4 sm:px-6 lg:px-8 py-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="container mx-auto ">
           <h1 className="text-2xl sm:text-3xl font-medium text-black mb-8">Billing Details</h1>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
             <BillingForm billingDetails={billingDetails} handleInputChange={handleInputChange} />

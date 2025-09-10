@@ -9,24 +9,28 @@ export async function GET(req: NextRequest) {
   try {
     let user_id: string | null = null;
     const cookie_header = req.headers.get("cookie") || "";
-    const cookies = cookie_header.split("; ").map(c => c.trim());
-    const user_cookie = cookies.find(c => c.endsWith(".user_info") || c.includes(".user_info="));
-    if (user_cookie) {
-      const value = decodeURIComponent(user_cookie.split("=")[1] || "");
-      try {
-        const bytes = CryptoJS.AES.decrypt(value, SECRET_KEY);
-        const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-        if (decrypted) {
-          const user = JSON.parse(decrypted);
-          user_id = user._id || null;
-        }
-      } catch (err) {
-        console.error("Failed to decrypt cookie:", err);
-        return NextResponse.json({ error: "Invalid user cookie" }, { status: 400 });
-      }
+    const cookies = cookie_header.split(";").map(c => c.trim());
+    const user_cookie = cookies.find(c => c.includes(".user_info="));
+    if (!user_cookie) {
+      return NextResponse.json({ error: "User cookie not found" }, { status: 401 });
     }
+    const value = decodeURIComponent(user_cookie.split("=")[1] || "");
+    try {
+      const bytes = CryptoJS.AES.decrypt(value, SECRET_KEY);
+      const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+      if (!decrypted) {
+        return NextResponse.json({ error: "Empty decrypted cookie" }, { status: 400 });
+      }
+      const user = JSON.parse(decrypted);
+      user_id = user._id || null;
+
+    } catch (err) {
+      console.error("Failed to decrypt cookie:", err);
+      return NextResponse.json({ error: "Invalid user cookie" }, { status: 400 });
+    }
+
     if (!user_id) {
-      return NextResponse.json({ error: "User not found in cookie" }, { status: 401 });
+      return NextResponse.json({ error: "User ID not found in cookie" }, { status: 401 });
     }
     const { client } = await connectToDatabase();
     const db = client.db("ecommerce");

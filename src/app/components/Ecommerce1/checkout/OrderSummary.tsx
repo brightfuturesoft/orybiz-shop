@@ -2,7 +2,6 @@
 
 import { CartItem } from "@/app/types/checkout"
 
-
 interface Props {
   cartItems: CartItem[]
   subtotal: number
@@ -11,6 +10,7 @@ interface Props {
 }
 
 export default function OrderSummary({ cartItems, subtotal, discount, total }: Props) {
+
   return (
     <div className="space-y-6">
       {/* Cart Items */}
@@ -20,10 +20,10 @@ export default function OrderSummary({ cartItems, subtotal, discount, total }: P
             <div key={item._id} className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
-                  {item.attachments && item.attachments[0] ? (
+                  {item.product_image && item.product_image[0] ? (
                     <img
-                      src={item.attachments[0]}
-                      alt={item.item_name}
+                      src={item.product_image}
+                      alt={item.product_name}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -31,12 +31,24 @@ export default function OrderSummary({ cartItems, subtotal, discount, total }: P
                   )}
                 </div>
                 <div>
-                  <span className="text-black">{item.item_name}</span>
-                  {item.quantity > 1 && <span className="text-gray-500 text-sm ml-2">x{item.quantity}</span>}
+                  <span className="text-black">{item.product_name}</span>
+                  {item.quantity > 1 && (
+                    <span className="text-gray-500 text-sm ml-2">x{item.quantity}</span>
+                  )}
+                  {item.variation && (item.variation.color || item.variation.size) && (
+                    <div className="text-gray-400 text-xs">
+                      {item.variation.color && (
+                        <span>Color: {item.variation.color}</span>
+                      )}
+                      {item.variation.size && (
+                        <span className="ml-2">Size: {item.variation.size}</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               <span className="text-black">
-                ${(Number.parseFloat(item.selling_price) * item.quantity).toFixed(2)}
+                ${(Number(item.order_price) * item.quantity).toFixed(2)}
               </span>
             </div>
           ))

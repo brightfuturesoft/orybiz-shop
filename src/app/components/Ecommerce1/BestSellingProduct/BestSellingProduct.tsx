@@ -11,14 +11,13 @@ const BestSellingProduct: React.FC<BestSellingProductProps> = ({ products }) => 
     <div className="container mx-auto px-4 py-8">
       {/* Section Header with Navigation */}
       <div className="flex justify-between items-end mb-6">
-        <div className="flex items-center space-x-4">
-          <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
-          <div>
-            <p className="text-red-500 font-semibold mb-1">This Month</p>
-            <h2 className="text-2xl md:text-3xl font-semibold mt-5">Best Selling Products</h2>
+         <div className=" space-x-4 ">
+           <div className='flex items-center gap-2'>
+                <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
+         <p className="text-red-500 font-semibold ">This Month</p>
           </div>
+            <h2 className="text-2xl md:text-3xl font-semibold mt-2">Best Selling Products</h2>
         </div>
-
         <div className="flex justify-center mt-12">
           {
             products?.length < 4 ? null : 

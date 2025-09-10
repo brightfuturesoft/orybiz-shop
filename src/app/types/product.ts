@@ -33,6 +33,17 @@ export interface Category {
   value: string;
 }
 
+export interface ProductVariant {
+  color: string; // rgb string, ex: "rgb(0,0,0)"
+  size: string;
+  sku: string;
+  quantity: number;
+  normal_price: number;
+  offer_price: number;
+  product_cost: number;
+  cover_photo: string[]; // array of image URLs
+}
+
 export interface Product {
   _id: string;
   item_type: string;
@@ -64,7 +75,7 @@ export interface Product {
   is_serialized: boolean;
   is_manage_batch: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attachments: any[]; 
+  attachments: any[];
   status: string;
   code: string;
   updatedAt: string;
@@ -74,4 +85,6 @@ export interface Product {
   created_by: string;
   updated_at: string;
   updated_by: string;
+  
+  variants?: ProductVariant[]; // added variants
 }

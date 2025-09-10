@@ -56,8 +56,6 @@ const serviceItems: Product[] = (products || []).filter(
       <MusicSection />
       <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
       <ExploreService products={serviceItems || []}/>
-      <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
-      <FeatureSection />
     </div>
   );
 }

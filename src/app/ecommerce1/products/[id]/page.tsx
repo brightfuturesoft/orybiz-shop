@@ -163,7 +163,7 @@ export default function ProductPage() {
         <span className="text-black">{product.item_name}</span>
       </div>
 
-      <div className="px-4 py-8 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="px-4 py-8 container  mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Images */}
         <div className="flex gap-4">
           <div className="flex flex-col gap-4">
@@ -171,14 +171,14 @@ export default function ProductPage() {
               <div
                 key={i}
                 onClick={() => setSelectedVariantIndex(i)}
-                className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer border ${selectedVariantIndex === i ? "ring-2 ring-red-500" : "hover:ring-2 hover:ring-gray-300"}`}
+                className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer border border-gray-300 ${selectedVariantIndex === i ? "ring-2 ring-gray-300" : "hover:ring-2 hover:ring-gray-300"}`}
               >
                 <Image src={img} alt={`variant ${i + 1}`} width={80} height={80} className="object-cover w-full h-full" />
               </div>
             ))}
           </div>
 
-          <div className="flex-1 rounded-lg overflow-hidden border hover:bg-gray-50">
+          <div className="flex-1 rounded-lg overflow-hidden border border-gray-300 hover:bg-gray-50">
             <Image
               src={productImages[0] || "/placeholder.svg"}
               alt={product.item_name}
@@ -217,9 +217,9 @@ export default function ProductPage() {
 
           {/* Quantity & Buy */}
           <div className="flex gap-4 items-center">
-            <div className="flex items-center border rounded">
+            <div className="flex items-center border border-gray-300 rounded">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2 hover:bg-gray-50" disabled={quantity <= 1}>-</button>
-              <span className="px-4 py-2 border-x min-w-[60px] text-center">{quantity}</span>
+              <span className="px-4 py-2 border-x border-gray-300 min-w-[60px] text-center">{quantity}</span>
               <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2 hover:bg-gray-50">+</button>
             </div>
 

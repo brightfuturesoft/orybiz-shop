@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
-
-const page = () => {
-  redirect("/ecommerce1")
-  return null;
+import HomePage from "./ecommerce1/page";
+const Page = () => {
+  return (
+   <HomePage />
+  );
 };
-export default page;
+
+export default Page;

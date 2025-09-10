@@ -6,13 +6,15 @@ import { Category } from '@/app/types/types';
 
 interface BrowseByCategoryProps {
   categories?: Category[];
+  loading?: boolean; 
 }
 
-const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [] }) => {
+const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [], loading = false }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  if (!categories.length && !loading) return null; 
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollLeft += scrollOffset;
@@ -28,16 +30,18 @@ const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [] }) 
     }
   };
 
+  const skeletonArray = Array.from({ length: 6 }); 
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header and Arrows */}
       <div className="flex justify-between items-center mb-6">
         <div className=" space-x-4 ">
-           <div className='flex items-center gap-2'>
-                <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
-         <p className="text-red-500 font-semibold ">Categories</p>
+          <div className='flex items-center gap-2'>
+            <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
+            <p className="text-red-500 font-semibold ">Categories</p>
           </div>
-            <h2 className="text-2xl md:text-3xl font-semibold mt-2">Browse By Category</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mt-2">Browse By Category</h2>
         </div>
         <div className="flex space-x-2">
           <button
@@ -57,30 +61,37 @@ const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [] }) 
         </div>
       </div>
 
-      {/* Categories Grid (with horizontal scroll) */}
+      {/* Categories Grid or Skeleton */}
       <div
         ref={scrollContainerRef}
         onScroll={updateScrollState}
         className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory hide-scrollbar space-x-6 pb-4"
       >
-        {categories.map((category) => (
-          <div
-            key={category._id}
-            className="flex-shrink-0 h-[200px]  w-[170px] snap-center p-6 border border-gray-300 rounded-md text-center cursor-pointer hover:bg-[#DB4444] hover:text-white hover:border-[#DB4444] transition-colors duration-300"
-          >
-            <div className="flex items-center justify-center font-semibold h-24 w-full relative">
-              {category.image && (
-                <Image
-                  src={category.image}
-                  alt={category.name}
-                  fill
-                  className="object-contain"
-                />
-              )}
-            </div>
-            <p className="mt-5 text-lg">{category.name}</p>
-          </div>
-        ))}
+        {loading
+          ? skeletonArray.map((_, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 h-[200px] w-[170px] snap-center p-6 border border-gray-300 rounded-md animate-pulse bg-gray-200"
+              ></div>
+            ))
+          : categories.map((category) => (
+              <div
+                key={category._id}
+                className="flex-shrink-0 h-[200px]  w-[170px] snap-center p-6 border border-gray-300 rounded-md text-center cursor-pointer hover:bg-[#DB4444] hover:text-white hover:border-[#DB4444] transition-colors duration-300"
+              >
+                <div className="flex items-center justify-center font-semibold h-24 w-full relative">
+                  {category.image && (
+                    <Image
+                      src={category.image}
+                      alt={category.name}
+                      fill
+                      className="object-contain"
+                    />
+                  )}
+                </div>
+                <p className="mt-5 text-lg">{category.name}</p>
+              </div>
+            ))}
       </div>
     </div>
   );

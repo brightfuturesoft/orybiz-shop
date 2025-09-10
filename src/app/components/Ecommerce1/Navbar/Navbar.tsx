@@ -3,12 +3,13 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { User, Heart, ShoppingCart, Search, Menu } from "lucide-react";
+import { User, ShoppingCart, Search, Menu, Truck, TruckElectric } from "lucide-react";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import AccountMenu from "../AccountMenu/AccountMenu";
 import Skeleton from "@/app/ui/LogoSkeleton/LogoSkeleton";
 import { TWorkSpace } from "@/app/types/types";
 import { useUserStore } from "@/store/userStore";
+import NavbarSearch from "../NavbarSearch/NavbarSearch";
 
 interface NavbarProps {
   workspace: TWorkSpace | null;
@@ -20,8 +21,7 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
-
-  const { user, fetchUser } = useUserStore(); // Zustand user store
+  const { user, fetchUser } = useUserStore(); 
   const accountMenuRef = useRef<HTMLDivElement>(null);
 
   // Fetch user on mount
@@ -75,27 +75,34 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
 
           {/* Center */}
           <nav className="hidden md:flex flex-grow justify-center">
-            <div className="relative hidden md:block w-48 lg:w-64">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input type="text" placeholder="Search products..." className="w-full pl-10 pr-4 py-2 rounded-md border-transparent bg-gray-100 text-sm focus:outline-none focus:bg-white focus:border-gray-300 transition-colors" />
-            </div>
+           <NavbarSearch/>
           </nav>
 
           {/* Right */}
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-2">
               {/* Wishlist */}
-              <div className="relative group">
+              {/* <div className="relative group">
                 <Link href="/ecommerce1/wishlist">
                   <Heart className="h-6 w-6" />
                   {wishlistCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">{wishlistCount}</span>}
                 </Link>
+              </div> */}
+
+                <div className="relative group">
+                <Link className="flex items-center gap-1" href="/ecommerce1/wishlist">
+                  <TruckElectric className="h-6 w-6 " /> <span className="font-semibold">Track Oder</span>
+            
+                </Link>
               </div>
+
+
               {/* Cart */}
               <div className="relative group">
-                <Link href="/ecommerce1/cart">
-                  <ShoppingCart className="h-6 w-6" />
-                  {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">{cartCount}</span>}
+                <Link className="flex gap-1" href="/ecommerce1/cart">
+                  {cartCount > 0 && <span className="absolute  -top-2 right-15 bg-red-500 text-white text-xs font-bold rounded-full px-1.5">{cartCount}</span>}
+                  <ShoppingCart className="h-6 w-6" /><span className="font-semibold">My Cart</span>
+                
                 </Link>
               </div>
 
@@ -103,9 +110,9 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
               <div className="relative" ref={accountMenuRef}>
                 <button
                   onClick={toggleAccountMenu}
-                  className="p-2 rounded-md hover:bg-gray-100 transition-colors hidden lg:flex items-center justify-center"
+                  className="p-2 rounded-md hover:bg-gray-100 transition-colors hidden lg:flex items-center justify-center gap-1"
                 >
-                  <User className="h-6 w-6 cursor-pointer" />
+                  <User className="h-6 w-6 cursor-pointer" /><span className="font-semibold">Accopunt</span>
                 </button>
 
                 {isAccountMenuOpen && (

@@ -7,6 +7,7 @@ export interface TWorkSpace {
   unique_id: string;
   created_at: string;
   updated_at: string;
+  top_bar_notice: string;
   is_active: boolean;
   permissions: string[];
   address_info: {
@@ -74,4 +75,11 @@ export interface Category {
   path?: string;
   workspace_id?: string;
   created_by?: string;
+}
+
+
+export interface Banner {
+  _id: string;
+  workspace_id: string;
+  image_url: string;
 }

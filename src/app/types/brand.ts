@@ -10,4 +10,5 @@ export type BrandType = {
   createAt: string; 
   workspace_id: string;
   created_by: string;
+  
 };

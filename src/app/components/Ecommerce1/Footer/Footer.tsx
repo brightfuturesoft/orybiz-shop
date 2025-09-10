@@ -3,19 +3,19 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FacebookIcon, InstagramIcon, LinkedinIcon, TwitterIcon, WhatsAppIcon, YouTubeIcon } from '../CustomIcons/CustomIcons';
 import { useWorkspaceStore } from '@/store/workspaceStore';
-import QRCode from 'react-qr-code';
+// import QRCode from 'react-qr-code';
 
 
 const Footer = () => {
   const workspace = useWorkspaceStore((state) => state.workspace);
-   const qrData = workspace
-    ? `Name: ${workspace.name}\nID: ${workspace.unique_id}\nDomain: ${workspace.domain_info.domain}`
-    : '';
+  //  const qr_data = workspace
+  //   ? `Name: ${workspace.name}\nID: ${workspace.unique_id}\nDomain: ${workspace.domain_info.domain}`
+  //   : '';
 
   return (
     <footer className="bg-black text-white py-16">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Column 1: Exclusive */}
           <div className="space-y-4">
          <Link href="/">  <Image
@@ -26,7 +26,7 @@ const Footer = () => {
                   className="transition-transform duration-300 group-hover:scale-110"
                 /> </Link>
             <h4 className="font-semibold mb-1 my-2">Subscribe</h4>
-            <p className="text-sm text-gray-400">Get 10% off your first order</p>
+            {/* <p className="text-sm text-gray-400">Get 10% off your first order</p> */}
             <div className="relative">
               <input
                 type="email"
@@ -60,20 +60,20 @@ const Footer = () => {
             <Link href="/ecommerce1/signup" className="block text-sm text-gray-400 hover:text-white transition-colors">Login / Register</Link>
             <Link href="/ecommerce1/cart" className="block text-sm text-gray-400 hover:text-white transition-colors">Cart</Link>
             <Link href="/ecommerce1/wishlist" className="block text-sm text-gray-400 hover:text-white transition-colors">Wishlist</Link>
-            <Link href="/ecommerce1/shop" className="block text-sm text-gray-400 hover:text-white transition-colors">Shop</Link>
+            {/* <Link href="/ecommerce1/shop" className="block text-sm text-gray-400 hover:text-white transition-colors">Shop</Link> */}
           </div>
 
           {/* Column 4: Quick Link */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-2">Quick Link</h3>
-            <Link href="/ecommerce1/privacy-policy" className="block text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/ecommerce1/terms" className="block text-sm text-gray-400 hover:text-white transition-colors">Terms Of Use</Link>
+            {/* <Link href="/ecommerce1/privacy-policy" className="block text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/ecommerce1/terms" className="block text-sm text-gray-400 hover:text-white transition-colors">Terms Of Use</Link> */}
             <Link href="/ecommerce1/about" className="block text-sm text-gray-400 hover:text-white transition-colors">About</Link>
             <Link href="/ecommerce1/contact" className="block text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
           </div>
 
           {/* Column 5: Download App */}
-       <div className="space-y-4 flex flex-col">
+       {/* <div className="space-y-4 flex flex-col">
             <h3 className="text-xl font-bold mb-2">Download App</h3>
             <p className="text-sm text-gray-400">Save $3 with App New User Only</p>
             <div className="flex justify-between items-center gap-5">
@@ -83,11 +83,11 @@ const Footer = () => {
 
               
             </div>
-          </div>
+          </div> */}
         </div>
 
  <div className='flex justify-center items-center gap-5 mt-5 md:mt-10'>
-    <div className="flex flex-col md:flex-row gap-2">
+    {/* <div className="flex flex-col md:flex-row gap-2">
                 <Image
                   src="/Footer/png-transparent-google-play-store-logo-google-play-app-store-android-wallets-text-label-logo.png"
                   alt="Google Play"
@@ -102,7 +102,7 @@ const Footer = () => {
                   height={150}
                   className="transition-transform duration-300 group-hover:scale-110"
                 />
-              </div>
+              </div> */}
           <div className="flex space-x-4 pt-2">
               <Link href={`${workspace?.social_info?.facebook}`} aria-label="Facebook"><FacebookIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>
               <Link href={`${workspace?.social_info?.twitter}`} aria-label="Twitter"><TwitterIcon className="h-6 w-6 text-white hover:text-gray-400 transition-colors" /></Link>

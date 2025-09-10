@@ -9,6 +9,8 @@ import Head from "next/head";
 import Spinner from "./ui/Spinner/Spinner";
 import Favicon from "./ui/Favicon/Favicon";
 import { Toaster } from "react-hot-toast";
+import EcommerceLayout1 from "./layout/EcommerceLayout1";
+
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
@@ -69,7 +71,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <Spinner message="Loading workspace..." size={64} color="red-500" />
             </div>
           ) : (
-            <>{children}  <Toaster position="top-center" reverseOrder={false} /></>
+            <><EcommerceLayout1>{children}</EcommerceLayout1><Toaster position="top-center" reverseOrder={false} /></>
             
           )}
         </QueryClientProvider>

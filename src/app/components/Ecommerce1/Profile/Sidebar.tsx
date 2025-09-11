@@ -8,7 +8,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection }) => {
-  const accountSections = ["My Profile", "Address Book", "My Payment Options"]
+  const accountSections = ["My Profile", "Address Book"]
   const orderSections = ["My Returns", "My Cancellations"]
   const wishlistSection = "My Wishlist"
   const manageAccountSection = "Manage My Account"

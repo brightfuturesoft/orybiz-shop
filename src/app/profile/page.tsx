@@ -4,13 +4,17 @@ import ManageAccountPage from "@/app/components/Ecommerce1/MangeAccount/MangeAcc
 import AddressBookPage from "@/app/components/Ecommerce1/Profile/AddressBookPage"
 import EditProfilePage from "@/app/components/Ecommerce1/Profile/EditProfilePage"
 import Sidebar from "@/app/components/Ecommerce1/Profile/Sidebar"
-import Spinner from "@/app/ui/Spinner/Spinner"
 import { useUserStore } from "@/store/userStore"
 import React, { useEffect, useState } from "react"
+import MyOrdersPage from "../components/Ecommerce1/order/MyOrder"
+import Wishlist from "../wishlist/page"
+import { useSearchParams } from "next/navigation"
 
 export default function AccountPage() {
-  const [activeSection, setActiveSection] = useState("Manage My Account")
-  const { user, loading, error, fetchUser } = useUserStore();
+  const searchParams = useSearchParams();
+  const sectionParam = searchParams.get("section");
+  const [activeSection, setActiveSection] = useState(sectionParam || "Manage My Account");
+  const { user, loading, fetchUser } = useUserStore();
   useEffect(() => {
     fetchUser(); 
   }, []);
@@ -46,6 +50,12 @@ export default function AccountPage() {
           )}
             {activeSection === "Address Book" && (
             <AddressBookPage/>
+          )}
+            {activeSection === "My Orders" && (
+            <MyOrdersPage/>
+          )}
+            {activeSection === "My Wishlist" && (
+            <Wishlist/>
           )}
         </div>
         }

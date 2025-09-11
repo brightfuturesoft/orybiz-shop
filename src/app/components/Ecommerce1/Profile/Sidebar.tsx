@@ -8,10 +8,9 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection }) => {
-  const accountSections = ["My Profile", "Address Book"]
-  const orderSections = ["My Returns", "My Cancellations"]
-  const wishlistSection = "My Wishlist"
+  const accountSections = ["My Profile", "Address Book", "My Orders", "My Wishlist", "My Reviews"]
   const manageAccountSection = "Manage My Account"
+ 
 
   const renderButton = (name: string) => (
     <button
@@ -38,11 +37,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeSection, setActiveSection }) =>
         </h3>
         <div className="space-y-2">{accountSections.map(renderButton)}</div>
       </div>
-      <div>
-        <h3 className="text-base font-medium text-gray-900 mb-3">My Orders</h3>
+      {/* <div>
         <div className="space-y-2">{orderSections.map(renderButton)}</div>
-      </div>
-      <div>{renderButton(wishlistSection)}</div>
+      </div> */}
+
     </div>
   )
 }

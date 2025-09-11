@@ -88,7 +88,7 @@ const handlePlaceOrder = async () => {
       quantity: item.quantity,
       order_price: item.order_price,
       variation: item.variation,
-      product_image: item.product_image?.[0] || "/placeholder.svg",
+      product_image: item.product_image || "/placeholder.svg",
     }));
 
     // Save cart silently if user exists or not

@@ -89,7 +89,7 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
           <div className="flex items-center space-x-3 md:space-x-4">
             {/* Track Order */}
             <Link
-              href="/ecommerce1/wishlist"
+              href="/wishlist"
               className="hidden md:flex items-center gap-1 px-2 py-1 hover:text-red-500 transition-colors"
             >
               <TruckElectric className="h-5 w-5" />
@@ -98,7 +98,7 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
 
             {/* Cart */}
             <Link
-              href="/ecommerce1/cart"
+              href="/cart"
               className="relative flex items-center gap-1 px-2 py-1 hover:text-red-500 transition-colors"
             >
               {cartCount > 0 && (
@@ -127,13 +127,13 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
                   ) : (
                     <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg p-2 z-50">
                       <Link
-                        href="/ecommerce1/login"
+                        href="/login"
                         className="block px-3 py-2 rounded-md hover:bg-gray-100"
                       >
                         Login
                       </Link>
                       <Link
-                        href="/ecommerce1/signup"
+                        href="/signup"
                         className="block px-3 py-2 rounded-md hover:bg-gray-100"
                       >
                         Sign Up

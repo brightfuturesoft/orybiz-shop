@@ -15,7 +15,7 @@ export default function NavbarSearch() {
     if (!trimmedTerm) return;
 
     // Pathname fixed, query update reload chara
-    router.replace(`/ecommerce1/productdetails?query=${encodeURIComponent(trimmedTerm)}`);
+    router.replace(`/productdetails?query=${encodeURIComponent(trimmedTerm)}`);
   };
 
   return (

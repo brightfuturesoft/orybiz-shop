@@ -56,10 +56,10 @@ const Footer = () => {
           {/* Column 3: Account */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold mb-2">Account</h3>
-            <Link href="/ecommerce1/profile" className="block text-sm text-gray-400 hover:text-white transition-colors">My Account</Link>
-            <Link href="/ecommerce1/signup" className="block text-sm text-gray-400 hover:text-white transition-colors">Login / Register</Link>
-            <Link href="/ecommerce1/cart" className="block text-sm text-gray-400 hover:text-white transition-colors">Cart</Link>
-            <Link href="/ecommerce1/wishlist" className="block text-sm text-gray-400 hover:text-white transition-colors">Wishlist</Link>
+            <Link href="/profile" className="block text-sm text-gray-400 hover:text-white transition-colors">My Account</Link>
+            <Link href="/signup" className="block text-sm text-gray-400 hover:text-white transition-colors">Login / Register</Link>
+            <Link href="/cart" className="block text-sm text-gray-400 hover:text-white transition-colors">Cart</Link>
+            <Link href="/wishlist" className="block text-sm text-gray-400 hover:text-white transition-colors">Wishlist</Link>
             {/* <Link href="/ecommerce1/shop" className="block text-sm text-gray-400 hover:text-white transition-colors">Shop</Link> */}
           </div>
 
@@ -68,8 +68,8 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-2">Quick Link</h3>
             {/* <Link href="/ecommerce1/privacy-policy" className="block text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/ecommerce1/terms" className="block text-sm text-gray-400 hover:text-white transition-colors">Terms Of Use</Link> */}
-            <Link href="/ecommerce1/about" className="block text-sm text-gray-400 hover:text-white transition-colors">About</Link>
-            <Link href="/ecommerce1/contact" className="block text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
+            <Link href="/about" className="block text-sm text-gray-400 hover:text-white transition-colors">About</Link>
+            <Link href="/contact" className="block text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
           </div>
 
           {/* Column 5: Download App */}

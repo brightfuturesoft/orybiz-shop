@@ -26,7 +26,7 @@ const SidebarItem = ({
     if (isMobile && hasChildren) {
       setOpen((prev) => !prev)
     } else {
-      router.push(`/ecommerce1/productdetails?category=${category._id}`)
+      router.push(`/productdetails?category=${category._id}`)
     }
   }
 

@@ -106,7 +106,7 @@ const handleAddToWishlist = () => {
             </button>
             <Link
               className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white"
-              href={`/ecommerce1/products/${product._id}`}
+              href={`/products/${product._id}`}
             >
               <EyeIcon className="h-5 w-5" />
             </Link>

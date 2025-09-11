@@ -34,7 +34,7 @@ const BrowseByCategory: React.FC<BrowseByCategoryProps> = ({ categories = [], lo
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClick = (category:any) => {
-    router.push(`/ecommerce1/productdetails?category=${category._id}`)
+    router.push(`/productdetails?category=${category._id}`)
   }
 
   const skeletonArray = Array.from({ length: 6 }); 

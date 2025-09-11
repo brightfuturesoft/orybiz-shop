@@ -22,7 +22,6 @@ const LoginPage: React.FC = () => {
       toast.error("Workspace unique ID not loaded yet");
       return;
     }
-
     const success = await login({ email, password, unique_id: workspace.unique_id });
     if (success) {
       toast.success("Login successful!");

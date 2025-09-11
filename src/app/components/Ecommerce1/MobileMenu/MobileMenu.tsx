@@ -80,7 +80,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 onClick={onClose}
                 className="hover:text-red-500 transition-colors"
               >
-                <Link href="/ecommerce1/wishlist">My WishList</Link>
+                <Link href="/wishlist">My WishList</Link>
               </li>
               <li
                 onClick={onClose}
@@ -90,7 +90,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               </li>
               {user ? (
                 <Link
-                  href={"/ecommerce1/profile"}
+                  href={"/profile"}
                   className="flex items-center gap-2 hover:text-red-500 transition-colors"
                 >
                   <span>Manage My Account</span>
@@ -100,7 +100,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   onClick={onClose}
                   className="hover:text-red-500 transition-colors"
                 >
-                  <Link href="/ecommerce1/signup">Sign Up</Link>
+                  <Link href="/signup">Sign Up</Link>
                 </li>
               )}
 

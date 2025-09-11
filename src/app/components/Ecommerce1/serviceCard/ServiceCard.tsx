@@ -40,7 +40,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
   return (
     <div className="bg-white w-[350px] rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group">
       {/* Image */}
-      <Link href={`/ecommerce1/services/${product._id}`}>
+      <Link href={`/services/${product._id}`}>
         <div className="relative w-full h-52 bg-gray-100 cursor-pointer overflow-hidden rounded-t-xl group-hover:scale-105 transition-transform duration-300">
           <Image
             src={product.attachments?.[0] || '/placeholder.png'}
@@ -53,7 +53,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
 
       {/* Details */}
       <div className="p-5 flex flex-col gap-3">
-        <Link href={`/ecommerce1/services/${product._id}`}>
+        <Link href={`/services/${product._id}`}>
           <h3 className="text-lg font-bold text-gray-900 truncate cursor-pointer hover:text-red-500 transition">
             {product.item_name}
           </h3>

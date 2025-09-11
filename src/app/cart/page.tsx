@@ -57,7 +57,7 @@ export default function Cart() {
     if (!cartItems.length) return toast.error("Your cart is empty!");
     setIsPosting(true);
     try {
-      router.push("/ecommerce1/cart/checkout");
+      router.push("/cart/checkout");
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
     } finally {

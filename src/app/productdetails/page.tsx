@@ -274,7 +274,7 @@ export default function ProductListingPage() {
     setSelectedRatings([])
     setPriceRange([minPrice, maxPrice])
     setLocalPriceRange([minPrice, maxPrice])
-    router.replace("/ecommerce1/productdetails")
+    router.replace("/productdetails")
   }
 
   // Cart & Wishlist Handlers

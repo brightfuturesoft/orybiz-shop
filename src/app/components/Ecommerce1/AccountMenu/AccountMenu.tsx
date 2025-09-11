@@ -28,7 +28,7 @@ const handleLogout = () => {
     <div className="absolute top-full right-0 mt-2 w-72 rounded-md p-4 md:p-6 bg-gradient-to-br from-gray-800 to-purple-950 shadow-2xl z-50">
       <ul className="text-white text-lg space-y-4">
         <li className="flex items-center space-x-4 p-2 rounded-lg cursor-pointer hover:bg-white/10 transition-colors duration-200">
-          <Link href={"/ecommerce1/profile"} className='flex items-center gap-2' ><User size={20} />
+          <Link href={"/profile"} className='flex items-center gap-2' ><User size={20} />
           <span>Manage My Account</span>
           </Link>
         </li>

@@ -83,3 +83,17 @@ export interface Banner {
   workspace_id: string;
   image_url: string;
 }
+
+
+export interface Address {
+  _id: string;            
+  user_id: string;       
+  type: "shipping" | "billing";  
+  full_name: string;     
+  street: string;        
+  city: string;          
+  state?: string;        
+  postal_code?: string; 
+  country?: string;     
+  phone: string;         
+}

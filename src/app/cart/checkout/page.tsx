@@ -8,9 +8,14 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/loginStore"
 import { useWorkspaceStore } from "@/store/workspaceStore"
+import { useUserStore } from "@/store/userStore"
 
 
 export default function CheckoutPage() {
+  const { user, fetchUser } = useUserStore();
+  useEffect(() => {
+    fetchUser();
+  }, []);
   const router = useRouter();
   const workspace = useWorkspaceStore((state) => state.workspace);
   const [cartItems, setCartItems] = useState<CartItem[]>([])
@@ -65,7 +70,7 @@ const calculateSubtotal = () =>
 const handlePlaceOrder = async () => {
   const required = ["full_name", "street_address", "town_city", "phone_number", "email_address"];
   const missing = required.filter((f) => !billingDetails[f as keyof BillingDetails]);
-  if (!storeUser && missing.length) return toast.error(`Please fill in: ${missing.join(", ")}`);
+  if (!user && missing.length) return toast.error(`Please fill in: ${missing.join(", ")}`);
   if (!cartItems.length) return toast.error("Your cart is empty!");
 
   setIsLoading(true);
@@ -74,9 +79,9 @@ const handlePlaceOrder = async () => {
     // Prepare payload for saving cart
     const payload = cartItems.map((item) => ({
       product_id: item._id,
-      user_id: storeUser?._id || "",
-      user_name: storeUser?.full_name || billingDetails.full_name,
-      user_email: storeUser?.email || billingDetails.email_address,
+      user_id: user?._id || "",
+      user_name: user?.full_name || billingDetails.full_name,
+      user_email: user?.email || billingDetails.email_address,
       user_number: billingDetails.phone_number,
       product_name: item.product_name,
       sku: item.sku || "",
@@ -92,13 +97,17 @@ const handlePlaceOrder = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+    
+    if (!user?._id) {
+     return toast.error("User Not Found")
+    }
 
     // Prepare order payload
     const orderPayload = {
       order_type: "ecommerce",
-      user_id: storeUser?._id,
+      user_id: user?._id,
       workspace_name: workspace?.name,
-      workspace_id: storeUser?.workspace_id,
+      workspace_id: workspace?._id,
       products: payload,
       delivery_address: {
         full_name: storeUser?.full_name || billingDetails.full_name,
@@ -142,7 +151,7 @@ const handlePlaceOrder = async () => {
     localStorage.removeItem("cart");
     window.dispatchEvent(new Event("cartUpdated"));
     setCartItems([]);
-    router.push("/ecommerce1");
+    router.push("/");
   } catch (err: any) {
     toast.error(err.message || "Something went wrong");
   } finally {

@@ -62,3 +62,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
   }
 }
+
+
+export async function GET(req: NextRequest) {
+  const workspace_id = req.nextUrl.searchParams.get("workspace_id"); 
+  const user_id = req.nextUrl.searchParams.get("user_id");
+  if (!workspace_id) {
+    return NextResponse.json({ error: "Workspace ID not provided" }, { status: 400 });
+  }
+  try {
+    const { client } = await connectToDatabase();
+    const db = client.db("ecommerce");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filter: any = {};
+    if (workspace_id) filter.workspace_id = workspace_id;
+    if (user_id) filter.user_id = user_id;
+    const orders = await db.collection("orders").find(filter).toArray();
+    return NextResponse.json({ orders: orders }, { status: 200 });
+  }catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Failed to fetch address" }, { status: 500 });
+  }
+}

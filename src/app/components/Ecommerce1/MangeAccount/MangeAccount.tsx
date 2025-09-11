@@ -1,141 +1,116 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 
-import { useState } from "react"
-
-interface UserProfile {
-  name: string
-  email: string
-  receiveMarketing: boolean
-}
-
-interface Address {
-  name: string
-  street: string
-  city: string
-  phone: string
-}
-
-interface Order {
-  id: string
-  date: string
-  items: string[]
-  total: number
-  status: string
-}
+import { useState, useEffect } from "react";
+import { useUserStore } from "@/store/userStore";
+import { useAddressStore } from "@/store/addressStore"; 
+import { Address } from "@/app/types/types";
+import { useWorkspaceStore } from "@/store/workspaceStore";
+import { useOrderStore } from "@/store/orderStore";
 
 export default function ManageAccountPage() {
-  const [profile, setProfile] = useState<UserProfile>({
-    name: "Mahadi Hasan",
-    email: "co******************@gmail.com",
-    receiveMarketing: false,
-  })
+  const { user, fetchUser, updateUser, setUser, loading: userLoading } = useUserStore();
+  const { address, fetchAddress, updateAddress, setAddress, loading: addressLoading } = useAddressStore();
+  const { orders, fetchOrders, loading: ordersLoading } = useOrderStore();
+  const workspace = useWorkspaceStore((state) => state.workspace);
 
-  const [shippingAddress, setShippingAddress] = useState<Address>({
-    name: "Mahadi Hasan",
-    street: "shjdbfyugasd",
-    city: "Dhaka - Dhaka - North - Mirpur 10",
-    phone: "(+880) 1648780966",
-  })
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [tempProfile, setTempProfile] = useState({ full_name: "", email: "" });
+  const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
+  const [tempAddress, setTempAddress] = useState<Partial<Address>>({});
 
-  const [billingAddress, setBillingAddress] = useState<Address>({
-    name: "Mahadi Hasan",
-    street: "shjdbfyugasd",
-    city: "Dhaka - Dhaka - North - Mirpur 10",
-    phone: "(+880) 1648780966",
-  })
+  // Fetch user
+  useEffect(() => {
+    if (!user) fetchUser();
+  }, [fetchUser, user]);
 
-  const [orders] = useState<Order[]>([
-    {
-      id: "659248425137143",
-      date: "25/05/2024",
-      items: ["/eco-friendly-product.png"],
-      total: 210,
-      status: "Delivered",
-    },
-    {
-      id: "659667546737143",
-      date: "22/05/2024",
-      items: [
-        "/brown-product-box.jpg",
-        "/brown-product-box.jpg",
-        "/brown-product-box.jpg",
-        "/brown-product-box.jpg",
-        "+2 more",
-      ],
-      total: 2745,
-      status: "Shipped",
-    },
-    {
-      id: "656979162237143",
-      date: "17/03/2024",
-      items: ["/kitchen-utensils.png", "/kitchen-utensils.png"],
-      total: 666,
-      status: "Delivered",
-    },
-  ])
+  // Fetch addresses
+  useEffect(() => {
+    if (user && workspace) fetchAddress(workspace._id, user._id);
+  }, [user, fetchAddress, workspace]);
 
-  const [editingProfile, setEditingProfile] = useState(false)
-  const [editingAddress, setEditingAddress] = useState(false)
-  const [tempProfile, setTempProfile] = useState(profile)
-  const [tempShippingAddress, setTempShippingAddress] = useState(shippingAddress)
-  const [tempBillingAddress, setTempBillingAddress] = useState(billingAddress)
+  // Fetch orders
+  useEffect(() => {
+    if (workspace?._id && user?._id) fetchOrders(workspace._id, user._id);
+  }, [workspace, user, fetchOrders]);
 
-  const handleProfileEdit = () => {
-    if (editingProfile) {
-      setProfile(tempProfile)
-      setEditingProfile(false)
-    } else {
-      setTempProfile(profile)
-      setEditingProfile(true)
-    }
-  }
+  // Initialize tempProfile when user loads
+  useEffect(() => {
+    if (user) setTempProfile({ full_name: user.full_name, email: user.email });
+  }, [user]);
 
-  const handleAddressEdit = () => {
-    if (editingAddress) {
-      setShippingAddress(tempShippingAddress)
-      setBillingAddress(tempBillingAddress)
-      setEditingAddress(false)
-    } else {
-      setTempShippingAddress(shippingAddress)
-      setTempBillingAddress(billingAddress)
-      setEditingAddress(true)
-    }
-  }
+  // Profile save
+  const handleProfileSave = async () => {
+    if (!user) return;
+    await updateUser({ full_name: tempProfile.full_name, email: tempProfile.email });
+    setUser({ ...user, ...tempProfile });
+    setEditingProfile(false);
+  };
 
-  const handleCancelEdit = () => {
-    setEditingProfile(false)
-    setEditingAddress(false)
-    setTempProfile(profile)
-    setTempShippingAddress(shippingAddress)
-    setTempBillingAddress(billingAddress)
-  }
+  const handleProfileCancel = () => {
+    if (user) setTempProfile({ full_name: user.full_name, email: user.email });
+    setEditingProfile(false);
+  };
 
-  const handleOrderManage = (orderId: string) => {
-    alert(`Managing order: ${orderId}`)
-  }
+  // Address edit
+  const handleAddressEdit = (addr: Address) => {
+    setEditingAddressId(addr._id);
+    setTempAddress(addr);
+  };
+
+  const handleAddressCancel = () => {
+    setEditingAddressId(null);
+    setTempAddress({});
+  };
+
+  const handleAddressSave = async () => {
+    if (!editingAddressId) return;
+    const { _id, ...updateDataWithoutId } = tempAddress;
+    const updated = await updateAddress(editingAddressId, updateDataWithoutId);
+    setAddress((prev: any) =>
+      prev?.map((addr: any) => (addr._id === editingAddressId ? updated : addr)) || [updated]
+    );
+    setEditingAddressId(null);
+    setTempAddress({});
+  };
+
+  if ((userLoading && !user) || addressLoading) return <p className="p-4">Loading...</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 md:mb-8">Manage My Account</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 md:mb-8">
+          Manage My Account
+        </h1>
 
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Personal Profile Section */}
+          {/* Personal Profile */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-medium text-gray-900">Personal Profile</h2>
-              <div className="flex space-x-2">
-                <button onClick={handleProfileEdit} className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                  {editingProfile ? "SAVE" : "EDIT"}
-                </button>
-                {editingProfile && (
-                  <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-700 text-sm font-medium">
+              {editingProfile ? (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleProfileSave}
+                    className="text-red-600 hover:text-red-700 text-sm font-medium"
+                  >
+                    SAVE
+                  </button>
+                  <button
+                    onClick={handleProfileCancel}
+                    className="text-gray-600 hover:text-gray-700 text-sm font-medium"
+                  >
                     CANCEL
                   </button>
-                )}
-              </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setEditingProfile(true)}
+                  className="text-red-600 hover:text-red-700 text-sm font-medium"
+                >
+                  EDIT
+                </button>
+              )}
             </div>
 
             <div className="space-y-4">
@@ -143,12 +118,12 @@ export default function ManageAccountPage() {
                 {editingProfile ? (
                   <input
                     type="text"
-                    value={tempProfile.name}
-                    onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={tempProfile.full_name}
+                    onChange={(e) => setTempProfile({ ...tempProfile, full_name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                   />
                 ) : (
-                  <p className="text-gray-900 font-medium">{profile.name}</p>
+                  <p className="text-gray-900 font-medium">{user?.full_name}</p>
                 )}
               </div>
               <div>
@@ -157,266 +132,140 @@ export default function ManageAccountPage() {
                     type="email"
                     value={tempProfile.email}
                     onChange={(e) => setTempProfile({ ...tempProfile, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                   />
                 ) : (
-                  <p className="text-gray-600">{profile.email}</p>
+                  <p className="text-gray-600">{user?.email}</p>
                 )}
-              </div>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="marketing"
-                  checked={editingProfile ? tempProfile.receiveMarketing : profile.receiveMarketing}
-                  onChange={(e) =>
-                    editingProfile && setTempProfile({ ...tempProfile, receiveMarketing: e.target.checked })
-                  }
-                  disabled={!editingProfile}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label htmlFor="marketing" className="text-sm text-gray-700">
-                  Receive marketing emails
-                </label>
               </div>
             </div>
           </div>
 
-          {/* Address Book Section */}
+          {/* Address Book */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-medium text-gray-900">Address Book</h2>
-              <div className="flex space-x-2">
-                <button onClick={handleAddressEdit} className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                  {editingAddress ? "SAVE" : "EDIT"}
-                </button>
-                {editingAddress && (
-                  <button onClick={handleCancelEdit} className="text-gray-600 hover:text-gray-700 text-sm font-medium">
-                    CANCEL
-                  </button>
-                )}
-              </div>
-            </div>
+            <h2 className="text-lg font-medium text-gray-900 mb-4">Address Book</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Default Shipping Address */}
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
-                  Default Shipping Address
-                </h3>
-                <div className="text-sm text-gray-900 space-y-2">
-                  {editingAddress ? (
+            {address?.map((addr) => {
+              const isEditing = editingAddressId === addr._id;
+              return (
+                <div key={addr._id} className="mb-4 border-b pb-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-medium">{addr.full_name}</p>
+                    {isEditing ? (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={handleAddressSave}
+                          className="text-red-600 hover:text-red-700 text-sm font-medium"
+                        >
+                          SAVE
+                        </button>
+                        <button
+                          onClick={handleAddressCancel}
+                          className="text-gray-600 hover:text-gray-700 text-sm font-medium"
+                        >
+                          CANCEL
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleAddressEdit(addr)}
+                        className="text-red-600 hover:text-red-700 text-sm font-medium"
+                      >
+                        EDIT
+                      </button>
+                    )}
+                  </div>
+
+                  {isEditing ? (
                     <>
                       <input
                         type="text"
-                        value={tempShippingAddress.name}
-                        onChange={(e) => setTempShippingAddress({ ...tempShippingAddress, name: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="Name"
+                        value={tempAddress.street || ""}
+                        onChange={(e) => setTempAddress({ ...tempAddress, street: e.target.value })}
+                        className="w-full mb-1 px-2 py-1 border rounded"
                       />
                       <input
                         type="text"
-                        value={tempShippingAddress.street}
-                        onChange={(e) => setTempShippingAddress({ ...tempShippingAddress, street: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="Street"
+                        value={tempAddress.city || ""}
+                        onChange={(e) => setTempAddress({ ...tempAddress, city: e.target.value })}
+                        className="w-full mb-1 px-2 py-1 border rounded"
                       />
                       <input
                         type="text"
-                        value={tempShippingAddress.city}
-                        onChange={(e) => setTempShippingAddress({ ...tempShippingAddress, city: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="City"
-                      />
-                      <input
-                        type="text"
-                        value={tempShippingAddress.phone}
-                        onChange={(e) => setTempShippingAddress({ ...tempShippingAddress, phone: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="Phone"
+                        value={tempAddress.phone || ""}
+                        onChange={(e) => setTempAddress({ ...tempAddress, phone: e.target.value })}
+                        className="w-full mb-1 px-2 py-1 border rounded"
                       />
                     </>
                   ) : (
-                    <>
-                      <p className="font-medium">{shippingAddress.name}</p>
-                      <p>{shippingAddress.street}</p>
-                      <p>{shippingAddress.city}</p>
-                      <p>{shippingAddress.phone}</p>
-                    </>
+                    <div>
+                      <p>{addr.street}</p>
+                      <p>{addr.city}</p>
+                      <p>{addr.phone}</p>
+                    </div>
                   )}
                 </div>
-              </div>
-
-              {/* Default Billing Address */}
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
-                  Default Billing Address
-                </h3>
-                <div className="text-sm text-gray-900 space-y-2">
-                  {editingAddress ? (
-                    <>
-                      <input
-                        type="text"
-                        value={tempBillingAddress.name}
-                        onChange={(e) => setTempBillingAddress({ ...tempBillingAddress, name: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="Name"
-                      />
-                      <input
-                        type="text"
-                        value={tempBillingAddress.street}
-                        onChange={(e) => setTempBillingAddress({ ...tempBillingAddress, street: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="Street"
-                      />
-                      <input
-                        type="text"
-                        value={tempBillingAddress.city}
-                        onChange={(e) => setTempBillingAddress({ ...tempBillingAddress, city: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="City"
-                      />
-                      <input
-                        type="text"
-                        value={tempBillingAddress.phone}
-                        onChange={(e) => setTempBillingAddress({ ...tempBillingAddress, phone: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
-                        placeholder="Phone"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <p className="font-medium">{billingAddress.name}</p>
-                      <p>{billingAddress.street}</p>
-                      <p>{billingAddress.city}</p>
-                      <p>{billingAddress.phone}</p>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Recent Orders Section */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        {/* Orders Section */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mt-6">
           <h2 className="text-lg font-medium text-gray-900 mb-6">Recent Orders</h2>
 
-          {/* Desktop Table View */}
-          <div className="hidden md:block overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Order #</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Placed On</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Items</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Total</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Status</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-500"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {orders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="py-4 px-4 text-sm text-gray-900">{order.id}</td>
-                    <td className="py-4 px-4 text-sm text-gray-900">{order.date}</td>
-                    <td className="py-4 px-4">
-                      <div className="flex items-center space-x-1">
-                        {order.items.slice(0, 4).map((item, index) =>
-                          item.startsWith("/") ? (
-                            <img
-                              key={index}
-                              src={item || "/placeholder.svg"}
-                              alt="Product"
-                              className="w-10 h-10 rounded object-cover"
-                            />
-                          ) : (
-                            <span key={index} className="text-sm text-gray-500 ml-2">
-                              {item}
-                            </span>
-                          ),
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-sm text-gray-900">৳ {order.total.toLocaleString()}</td>
-                    <td className="py-4 px-4">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          order.status === "Delivered"
-                            ? "bg-green-100 text-green-800"
-                            : order.status === "Shipped"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="py-4 px-4">
-                      <button
-                        onClick={() => handleOrderManage(order.id)}
-                        className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                      >
-                        MANAGE
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {ordersLoading && <p className="text-gray-500">Loading orders...</p>}
 
-          {/* Mobile Card View */}
-          <div className="md:hidden space-y-4">
-            {orders.map((order) => (
-              <div key={order.id} className="border border-gray-200 rounded-lg p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">Order #{order.id}</p>
-                    <p className="text-sm text-gray-500">{order.date}</p>
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full mt-1 ${
-                        order.status === "Delivered"
-                          ? "bg-green-100 text-green-800"
-                          : order.status === "Shipped"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-yellow-100 text-yellow-800"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => handleOrderManage(order.id)}
-                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-                  >
-                    MANAGE
-                  </button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    {order.items
-                      .slice(0, 2)
-                      .map((item, index) =>
-                        item.startsWith("/") ? (
-                          <img
-                            key={index}
-                            src={item || "/placeholder.svg"}
-                            alt="Product"
-                            className="w-10 h-10 rounded object-cover"
-                          />
-                        ) : null,
-                      )}
-                    {order.items.length > 2 && (
-                      <span className="text-sm text-gray-500">+ {order.items.length - 2}</span>
-                    )}
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">৳ {order.total.toLocaleString()}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {!ordersLoading && (!orders || orders.length === 0) && (
+            <p className="text-gray-500 italic">You have not placed any orders yet.</p>
+          )}
+
+          {!ordersLoading && orders?.length && (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[600px] border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Order #</th>
+                    <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Placed On</th>
+                    <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Items</th>
+                    <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Total</th>
+                    <th className="py-3 px-4 text-left text-sm font-medium text-gray-500">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {orders.map((order) => {
+                    type OrderStatus = "pending" | "shipped" | "delivered" | "cancelled";
+                    const statusColors: Record<OrderStatus, { text: string }> = {
+                      pending: { text: "#B91C1C" },
+                      shipped: { text: "#1E40AF" },
+                      delivered: { text: "#15803D" },
+                      cancelled: { text: "#374151" },
+                    };
+                    const currentStatus =
+                      statusColors[order.order_status as OrderStatus] || statusColors.cancelled;
+
+                    return (
+                      <tr key={order._id}>
+                        <td className="py-4 px-4 text-sm text-gray-900">{order.order_number}</td>
+                        <td className="py-4 px-4 text-sm text-gray-900">
+                          {new Date(order.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-900">
+                          {order.products.map((p) => p.product_name).join(", ")}
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-900">৳ {order.total_amount}</td>
+                        <td style={{ color: currentStatus.text }}>
+                          {order.order_status.charAt(0).toUpperCase() + order.order_status.slice(1)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }

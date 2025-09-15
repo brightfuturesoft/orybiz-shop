@@ -18,7 +18,7 @@ export default function CartActions({ onUpdateCart }: CartActionsProps) {
   return (
     <div className="mt-8 ">
 
-      <div className="flex justify-between mb-5">
+      <div className="flex justify-between mb-5 flex-col gap-2 md:flex-row">
               <button
         onClick={onUpdateCart}
         className="w-full sm:w-auto px-6 py-3 border border-gray-300 rounded-md cursor-pointer text-gray-700 hover:bg-gray-200 transition-colors"
@@ -34,7 +34,7 @@ export default function CartActions({ onUpdateCart }: CartActionsProps) {
       </div>
 
 
-      <div className="flex gap-5">
+      <div className="flex gap-5 flex-col md:flex-row">
  <input
         type="text"
         placeholder="Coupon Code"
@@ -49,8 +49,6 @@ export default function CartActions({ onUpdateCart }: CartActionsProps) {
         Apply Coupon
       </button>
       </div>
-     
-
     </div>
   );
 }

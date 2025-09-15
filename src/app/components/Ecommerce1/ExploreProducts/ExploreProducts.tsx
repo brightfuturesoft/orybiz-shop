@@ -36,12 +36,12 @@ const ExploreProducts: React.FC<ExploreProductProps> = ({products}) => {
       {/* Section Header with Navigation */}
       <div className="flex justify-between items-end mb-6">
 
-           <div className="flex items-center space-x-4">
-          <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
-          <div>
-            <p className="text-red-500 font-semibold mb-1">Our Products</p>
-            <h2 className="text-2xl md:text-3xl font-semibold mt-5">Explore Our Products</h2>
+           <div className=" space-x-4 ">
+           <div className='flex items-center gap-2'>
+                <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
+         <p className="text-red-500 font-semibold ">Our Products</p>
           </div>
+            <h2 className="text-2xl md:text-3xl font-semibold mt-2">Explore Our Products</h2>
         </div>
 
         <div className="flex space-x-2">
@@ -64,6 +64,7 @@ const ExploreProducts: React.FC<ExploreProductProps> = ({products}) => {
             <ArrowRight className="h-6 w-6 text-black" />
           </button>
         </div>
+        
       </div>
 
       {/* Products Grid with Horizontal Scrolling */}

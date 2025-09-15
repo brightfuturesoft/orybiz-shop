@@ -18,11 +18,11 @@ export default function EcommerceLayout1({ children }: EcommerceLayout1Props) {
   return (
     <div className="min-h-screen flex flex-col">
       <Head>
-        <title>My Ecommerce Store</title>
+        <title>{workspace?.name}</title>
         <meta name="description" content="Shop best products online" />
       </Head>
       <TopBar />
-      <Navbar workspace={workspace as TWorkSpace | null} />
+      <Navbar workspace={workspace as TWorkSpace } />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

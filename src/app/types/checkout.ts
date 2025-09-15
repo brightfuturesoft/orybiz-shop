@@ -9,12 +9,12 @@ export interface CartItem {
 }
 
 export interface BillingDetails {
-  firstName: string
-  companyName: string
-  streetAddress: string
+  full_name: string
+  company_name: string
+  street_address: string
   apartment: string
-  townCity: string
-  phoneNumber: string
-  emailAddress: string
-  saveInfo: boolean
+  town_city: string
+  phone_number: string
+  email_address: string
+
 }

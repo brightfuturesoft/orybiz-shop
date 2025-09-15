@@ -1,16 +1,14 @@
 import Image from 'next/image';
-import { HeartIcon, EyeIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { HeartIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Product } from '@/app/types/product';
 import toast from 'react-hot-toast';
-
 
 interface ServiceCardProps {
   product: Product;
 }
 
-
 const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
-
   const handleAddToCart = () => {
     if (!product) return;
     const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -18,13 +16,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
     if (!isProductInCart) {
       const updatedCart = [...existingCart, { ...product, quantity: 1 }];
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-      window.dispatchEvent(new Event('cartUpdated')); 
+      window.dispatchEvent(new Event('cartUpdated'));
       toast.success(`${product.item_name} added to cart!`);
     } else {
       toast.error('Product already in cart!');
     }
   };
-  
+
   const handleAddToWishlist = () => {
     if (!product) return;
     const existingWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
@@ -32,7 +30,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
     if (!isProductInWishlist) {
       const updatedWishlist = [...existingWishlist, product];
       localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-      window.dispatchEvent(new Event('wishlistUpdated')); 
+      window.dispatchEvent(new Event('wishlistUpdated'));
       toast.success(`${product.item_name} added to wishlist!`);
     } else {
       toast.error('Product already in wishlist!');
@@ -40,50 +38,83 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 rounded  p-3  group">
-      {/* Image Section */}
-      <div className="relative flex justify-center items-center w-[250px] h-[220px] rounded border border-gray-300">
-        <Image
-           src={product.attachments?.[0]}
-          alt={product.item_name}
-          width={200}
-          height={150}
-          className="transition-transform duration-300 group-hover:scale-110"
-        />
-        {/* Hover Actions */}
-        <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={handleAddToWishlist}  className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
-            <HeartIcon className="h-5 w-5" />
-          </button>
-          <button className="p-2 rounded-full cursor-pointer bg-white text-gray-700 hover:bg-red-500 hover:text-white">
-            <EyeIcon className="h-5 w-5" />
-          </button>
+    <div className="bg-white w-[350px] rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden group">
+      {/* Image */}
+      <Link href={`/services/${product._id}`}>
+        <div className="relative w-full h-52 bg-gray-100 cursor-pointer overflow-hidden rounded-t-xl group-hover:scale-105 transition-transform duration-300">
+          <Image
+            src={product.attachments?.[0] || '/placeholder.png'}
+            alt={product.item_name}
+            fill
+            className="object-cover rounded-t-xl"
+          />
         </div>
-
-          <div className="absolute bottom-0 w-full flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={handleAddToCart} className="p-2 cursor-pointer  bg-black   text-white">
-            Add To Cart
-          </button>
-         
-        </div>
-
-      </div>
-      
+      </Link>
 
       {/* Details */}
-      <p className="text-black font-medium text-[16px] leading-6 truncate">{product.item_name}</p>
-      <div className="flex items-center gap-2 -mt-2">
-          <span className="text-red-500 font-bold">${product.selling_price}</span>
-        {/* <div className="flex">
-          {[...Array(5)].map((_, i) => (
-            <StarIcon key={i} className={`h-4 w-4 ${i < product.rating ? 'text-yellow-400' : 'text-gray-300'}`} />
+      <div className="p-5 flex flex-col gap-3">
+        <Link href={`/services/${product._id}`}>
+          <h3 className="text-lg font-bold text-gray-900 truncate cursor-pointer hover:text-red-500 transition">
+            {product.item_name}
+          </h3>
+        </Link>
+
+        {/* Categories */}
+        <div className="flex flex-wrap gap-2">
+          {product.categories?.map((cat) => (
+            <span
+              key={cat.value}
+              className="text-xs px-3 py-1 bg-gray-200 text-gray-700 rounded-full"
+            >
+              {cat.label}
+            </span>
           ))}
-        </div> */}
-        <span className="text-gray-500 ml-2">Stock:({product.stock_quantites ? product.stock_quantites : 0})</span>
+        </div>
+
+        {/* Price */}
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-red-600 font-semibold text-sm">
+            {product.selling_price && Number(product.selling_price) > 0
+              ? `$${product.selling_price}`
+              : 'Contact for Price'}
+          </span>
+          {product.stock_quantites && Number(product.stock_quantites) > 0 && (
+            <span className="text-gray-400 text-xs">Stock: {product.stock_quantites}</span>
+          )}
+        </div>
+
+        {/* Contact Details (Dummy) */}
+        <div className="mt-3 flex flex-col gap-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <div className="flex items-center gap-2 text-gray-700">
+            <PhoneIcon className="w-5 h-5 text-gray-500" />
+            <span>+880 123 456 789</span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-700">
+            <EnvelopeIcon className="w-5 h-5 text-gray-500" />
+            <span>support@example.com</span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-3 mt-4">
+          {product.is_purchasable && (
+            <button
+              onClick={handleAddToCart}
+              className="flex-1 py-2 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition"
+            >
+              Add To Cart
+            </button>
+          )}
+          <button
+            onClick={handleAddToWishlist}
+            className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded hover:bg-red-500 hover:text-white transition"
+          >
+            <HeartIcon className="w-6 h-6" />
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-
 
 export default ServiceCard;

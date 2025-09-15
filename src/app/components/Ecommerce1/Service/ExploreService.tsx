@@ -106,14 +106,13 @@ const ExploreService: React.FC<ExploreServiceProps>  = ({products}) => {
       {/* Section Header with Navigation */}
       <div className="flex justify-between items-end mb-6">
 
-           <div className="flex items-center space-x-4">
-          <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
-          <div>
-            <p className="text-red-500 font-semibold mb-1">Our Service</p>
-            <h2 className="text-2xl md:text-3xl font-semibold mt-5">Explore Our Service</h2>
+            <div className=" space-x-4 ">
+           <div className='flex items-center gap-2'>
+                <div className="w-4 h-8 bg-red-500 rounded-sm"></div>
+         <p className="text-red-500 font-semibold ">Our Service</p>
           </div>
+            <h2 className="text-2xl md:text-3xl font-semibold mt-2">Explore Our Service</h2>
         </div>
-
         <div className="flex space-x-2">
           <button
             onClick={() => scroll(-300)}

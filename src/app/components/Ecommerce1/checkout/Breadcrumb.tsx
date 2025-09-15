@@ -3,7 +3,7 @@
 export default function Breadcrumb() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-10 border-gray-200">
-      <div className="max-w-7xl mx-auto">
+      <div className="container mx-auto">
         <nav className="text-sm text-gray-500">
           <span>Home</span>
           <span className="mx-2">/</span>

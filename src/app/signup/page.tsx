@@ -26,7 +26,7 @@ const CreateAccountPage: React.FC = () => {
 
     if (!error) {
       toast.success("Signup successful! Please login.");
-      router.push("/ecommerce1/login");
+      router.push("/login");
     } else if (error) {
       toast.error(error);
     }

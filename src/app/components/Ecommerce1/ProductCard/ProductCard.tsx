@@ -87,13 +87,27 @@ const handleAddToWishlist = () => {
       <div className="flex flex-col gap-4 rounded p-3 group">
         {/* Image Section */}
         <div className="relative flex justify-center items-center w-[250px] h-[250px] bg-gray-100 rounded">
-        <Image
-  src={product.variants?.[0]?.cover_photo?.[0] || '/placeholder.png'} // fallback image
-  alt={product.item_name}
+{product.variants?.[0]?.cover_photo?.[0] ? (
+ <Image
+  src={
+    product.variants?.[0]?.cover_photo?.[0]?.startsWith('http')
+      ? product.variants[0].cover_photo[0]
+      : product.variants?.[0]?.cover_photo?.[0]
+      ? `/${product.variants[0].cover_photo[0]}`
+      : '/placeholder.png'
+  }
+  alt={product.item_name || 'No Image'}
   width={200}
   height={200}
   className="transition-transform duration-300 group-hover:scale-110 object-fill w-56 h-52 rounded-md"
 />
+
+) : (
+  <div className="w-56 h-52 flex items-center justify-center bg-gray-200 rounded-md">
+    No Image
+  </div>
+)}
+
 
           {/* Hover Actions */}
           <div className="absolute top-2 right-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">

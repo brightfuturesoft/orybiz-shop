@@ -5,75 +5,7 @@ import ServiceCard from '../serviceCard/ServiceCard';
 import { Product } from '@/app/types/product';
 
 
-// Hard-coded data for all products
-const allProducts = [
-  {
-    name: 'Digital Marketing Course',
-    price: 100,
-    rating: 4,
-    reviews: 35,
-    image: '/service/digital-messaging-services-9622168-7869757.webp', 
-  },
-  {
-    name: 'Graphics Design Course',
-    price: 360,
-    originalPrice: 500,
-    rating: 5,
-    reviews: 95,
-    image: '/service/graphics.webp',
-  },
-  {
-    name: 'Web Development Course',
-    price: 700,
-    originalPrice: 1000,
-    rating: 4.5,
-    reviews: 325,
-    image: '/service/web-development.webp',
-  },
-  {
-    name: 'AI development L1',
-    price: 500,
-    rating: 4,
-    reviews: 145,
-    image: '/service/ai.webp',
-  },
-  {
-    name: 'AI development L2',
-    price: 960,
-    rating: 5,
-    reviews: 65,
-    image: '/service/ai2.webp',
-    isNew: true,
-    colors: ['#DB4444', '#000000'],
-  },
-  {
-    name: 'Jr. Zoom Soccer Cleats',
-    price: 1160,
-    rating: 4,
-    reviews: 35,
-    image: '/service/digital-messaging-services-9622168-7869757.webp',
-    isNew: true,
-    colors: ['#000000', '#DB4444'],
-  },
-  {
-    name: 'GP11 Shooter USB Gamepad',
-    price: 660,
-    originalPrice: 800,
-    rating: 4.5,
-    reviews: 55,
-    image: '/service/digital-messaging-services-9622168-7869757.webp',
-    isNew: true,
-    colors: ['#DB4444', '#000000'],
-  },
-  {
-    name: 'Quilted Satin Jacket',
-    price: 660,
-    rating: 4.5,
-    reviews: 55,
-    image: '/service/digital-messaging-services-9622168-7869757.webp',
-    colors: ['#3A3C42', '#DB4444'],
-  },
-];
+
 
 interface ExploreServiceProps {
   products: Product[]; 

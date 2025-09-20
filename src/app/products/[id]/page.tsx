@@ -216,7 +216,7 @@ export default function ProductPage() {
           )}
 
           {/* Quantity & Buy */}
-          <div className="flex gap-4 items-center flex-col">
+          <div className="flex gap-4 items-center flex-col md:flex-row">
             <div className="flex items-center border border-gray-300 rounded">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2 hover:bg-gray-50" disabled={quantity <= 1}>-</button>
               <span className="px-4 py-2 border-x border-gray-300 min-w-[60px] text-center">{quantity}</span>
@@ -224,15 +224,19 @@ export default function ProductPage() {
             </div>
 
            <div className="flex flex-row gap-5">
-             <button onClick={handleBuyNow} className="flex-1 px-3 bg-red-500 text-white md:py-3 rounded hover:bg-red-600 cursor-pointer">Buy Now</button>
-            <button onClick={handleAddToCart} className="flex-1 px-5 bg-black text-white md:py-3 rounded hover:bg-gray-800 cursor-pointer">Add To Cart</button>
+             <button onClick={handleBuyNow} className="flex-1 px-3 bg-red-500 text-white md:py-2 rounded hover:bg-red-600 cursor-pointer">Buy Now</button>
+            <button onClick={handleAddToCart} className="flex-1 px-5 bg-black text-white md:py-2 rounded hover:bg-gray-800 cursor-pointer">Add To Cart</button>
             <button onClick={handleWishlistToggle} className={`p-3 border rounded ${isWishlisted ? "border-red-500 bg-red-50 text-red-500" : "border-gray-300 hover:bg-gray-50"}`}>❤️</button>
            </div>
           </div>
         </div>
       </div>
+      
+      {
+        relatedProducts?.length < 1 ? null :   <ReletedProducts products={relatedProducts || []} />
+      }
 
-      <ReletedProducts products={relatedProducts || []} />
+    
     </div>
   )
 }

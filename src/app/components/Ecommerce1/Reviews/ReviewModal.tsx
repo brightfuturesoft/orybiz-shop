@@ -3,9 +3,11 @@
 import { useState, useRef, type ChangeEvent } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
+import { useUserStore } from "@/store/userStore";
 
 interface ReviewModalProps {
   isOpen: boolean;
+  order_id?:string;
   onClose: () => void;
 }
 
@@ -15,7 +17,8 @@ interface UploadedFile {
   preview: string;
 }
 
-export default function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
+export default function ReviewModal({order_id, isOpen, onClose }: ReviewModalProps) {
+  const { user } = useUserStore();
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(5);
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
@@ -52,12 +55,16 @@ export default function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
       uploadedFiles.forEach((f) => {
         formData.append("images", f.file);
       });
-
+      const payload = {
+        ...formData,
+        user_id: user?._id,
+        workspace_id: user?.workspace_id,
+        order_id
+      };
       const res = await fetch("/api/reviews", {
         method: "POST",
-        body: formData,
+        body: payload,
       });
-
       if (!res.ok) throw new Error("Failed to submit review");
 
       const data = await res.json();
@@ -108,7 +115,9 @@ export default function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
 
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Write a Review</h2>
+          <h2 className="text-lg font-semibold text-gray-900">
+            Write a Review
+          </h2>
         </div>
 
         {/* Content */}

@@ -216,7 +216,7 @@ export default function EditProfilePage() {
 
             {/* Save Button */}
             <div className="pt-4">
-              <button onClick={handleSaveChanges} disabled={isLoading} className={`w-full md:w-auto px-8 py-3 rounded-md text-white font-medium ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"}`}>
+              <button onClick={handleSaveChanges} disabled={isLoading} className={`w-full md:w-auto px-8 py-3 rounded-md text-white font-medium ${isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-red-600"}`}>
                 {isLoading ? "SAVING..." : "SAVE CHANGES"}
               </button>
             </div>

@@ -54,7 +54,10 @@ const serviceItems: Product[] = (products || []).filter(
       <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
       <MusicSection />
       <div className="container my-5 h-[2px] mx-auto bg-gray-500 opacity-30"></div>
-      <ExploreService products={serviceItems || []}/>
+      {
+        serviceItems.length < 1 ? null : <ExploreService products={serviceItems || []}/>
+      }
+     
     </div>
   );
 }

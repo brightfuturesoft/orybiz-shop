@@ -1,23 +1,22 @@
 "use client"
 
 import ManageAccountPage from "@/app/components/Ecommerce1/MangeAccount/MangeAccount"
-import AddressBookPage from "@/app/components/Ecommerce1/Profile/AddressBookPage"
 import EditProfilePage from "@/app/components/Ecommerce1/Profile/EditProfilePage"
 import Sidebar from "@/app/components/Ecommerce1/Profile/Sidebar"
 import { useUserStore } from "@/store/userStore"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import MyOrdersPage from "../components/Ecommerce1/order/MyOrder"
 import Wishlist from "../wishlist/page"
 import { useSearchParams } from "next/navigation"
+import ReviewPage from "../components/Ecommerce1/Profile/Reviews"
+// import ReviewPage from "../components/Ecommerce1/Profile/Reviews"
 
 export default function AccountPage() {
   const searchParams = useSearchParams();
   const sectionParam = searchParams.get("section");
   const [activeSection, setActiveSection] = useState(sectionParam || "Manage My Account");
-  const { user, loading, fetchUser } = useUserStore();
-  useEffect(() => {
-    fetchUser(); 
-  }, []);
+  const { user, loading } = useUserStore();
+
 
 
 
@@ -48,14 +47,18 @@ export default function AccountPage() {
             {activeSection === "My Profile" && (
             <EditProfilePage/>
           )}
-            {activeSection === "Address Book" && (
+            {/* {activeSection === "Address Book" && (
             <AddressBookPage/>
-          )}
+          )} */}
             {activeSection === "My Orders" && (
             <MyOrdersPage/>
           )}
             {activeSection === "My Wishlist" && (
             <Wishlist/>
+          )}
+
+            {activeSection === "My Reviews" && (
+            <ReviewPage/>
           )}
         </div>
         }

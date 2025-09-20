@@ -62,7 +62,7 @@ export default function MyOrdersPage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-0 lg:px-0">
-          <h1 className="text-xl font-medium text-gray-900 py-4">My Orders</h1>
+          <h1 className="text-xl font-semibold  text-gray-900 py-4">My Orders</h1>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-0 lg:px-0">
@@ -174,12 +174,14 @@ export default function MyOrdersPage() {
                                 {item.product_name}
                               </h4>
 
- {item.variation && (
-  <p className="text-xs text-gray-500">
-    Color: {rgbToName(item.variation.color)}
-    {item.variation.size && item.variation.size.trim() !== "" && ` | Size: ${item.variation.size}`}
-  </p>
-)}
+                              {item.variation && (
+                                <p className="text-xs text-gray-500">
+                                  Color: {rgbToName(item.variation.color)}
+                                  {item.variation.size &&
+                                    item.variation.size.trim() !== "" &&
+                                    ` | Size: ${item.variation.size}`}
+                                </p>
+                              )}
 
                               <span className="text-sm font-medium text-gray-900">
                                 Price: ৳ {item.order_price}
@@ -219,6 +221,12 @@ export default function MyOrdersPage() {
                                   </button>
                                 </div>
                               )}
+
+                              <ReviewModal
+                                order_id={order?._id}
+                                isOpen={isModalOpen}
+                                onClose={() => setIsModalOpen(false)}
+                              />
                             </div>
                           </div>
                         </div>
@@ -230,10 +238,6 @@ export default function MyOrdersPage() {
             </div>
           )}
         </div>
-        <ReviewModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
       </div>
     </div>
   );

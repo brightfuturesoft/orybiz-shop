@@ -509,7 +509,7 @@ export default function ProductListingPage() {
               </div>
 
               {/* Details */}
-              <div className="p-4 flex-1 flex flex-col justify-between">
+              <div className="p-4 flex-1 flex flex-col justify-between md:fler">
                 <div>
                   <h3 className="text-base font-semibold text-gray-900 mb-1 line-clamp-2">
                     {product.title}

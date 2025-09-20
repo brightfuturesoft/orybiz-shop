@@ -38,13 +38,12 @@ const handleLogout = () => {
           <span>My Order</span>
        </Link>
         </li>
-        <li className="flex items-center space-x-4 p-2 rounded-lg cursor-pointer hover:bg-white/10 transition-colors duration-200">
-          <XCircle size={20} />
-          <span>My Cancellations</span>
-        </li>
-        <li className="flex items-center space-x-4 p-2 rounded-lg cursor-pointer hover:bg-white/10 transition-colors duration-200">
+
+        <li  className="flex items-center space-x-4 p-2 rounded-lg cursor-pointer hover:bg-white/10 transition-colors duration-200">
+       <Link href={"/profile?section=My Reviews"} className='flex items-center gap-2' >
           <Star size={20} />
           <span>My Reviews</span>
+       </Link>
         </li>
         <li
           onClick={handleLogout}

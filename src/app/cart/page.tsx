@@ -88,7 +88,7 @@ export default function Cart() {
                 />
               ))
             ) : (
-              <div className="text-center py-8 text-gray-500 text-lg">
+              <div className=" text-center py-8 text-gray-500 text-lg">
                 Your cart is empty
               </div>
             )}
@@ -100,7 +100,8 @@ export default function Cart() {
           </div>
 
           {/* Cart Totals */}
-          <div className="lg:col-span-1">
+         {
+          cartItems?.length < 1 ? null : <div className="lg:col-span-1">
             <CartTotals
               isPosting={isPosting}
               handleProceedToCheckout={handleProceedToCheckout}
@@ -108,6 +109,7 @@ export default function Cart() {
               total={total}
             />
           </div>
+         }
         </div>
       </div>
     </div>

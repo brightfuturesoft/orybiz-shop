@@ -1,4 +1,3 @@
-
 import { TWorkSpace } from "@/app/types/types";
 import { create } from "zustand";
 
@@ -20,7 +19,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set) => ({
       if (!res.ok) throw new Error("Failed to fetch workspace");
       const data: TWorkSpace = await res.json();
       set({ workspace: data, loading: false, error: null });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
       set({ workspace: null, loading: false, error: err.message });

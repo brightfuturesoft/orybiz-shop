@@ -18,6 +18,7 @@ type ReviewState = {
   success: boolean;
   postReview: (reviewData: Review) => Promise<void>;
   fetchReviews: (product_id: string) => Promise<void>;
+  fetchUserReviews: (user_id: string) => Promise<void>; // new method
 };
 
 export const useReviewStore = create<ReviewState>((set) => ({
@@ -57,6 +58,23 @@ export const useReviewStore = create<ReviewState>((set) => ({
       });
 
       if (!res.ok) throw new Error("Failed to fetch reviews");
+
+      const data: { reviews: Review[] } = await res.json();
+      set({ reviews: data.reviews, loading: false, error: null });
+    } catch (err: any) {
+      console.error(err);
+      set({ reviews: null, loading: false, error: err.message });
+    }
+  },
+
+  fetchUserReviews: async (user_id: string) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch(`/api/review?user_id=${user_id}`, {
+        cache: "no-store",
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch user reviews");
 
       const data: { reviews: Review[] } = await res.json();
       set({ reviews: data.reviews, loading: false, error: null });

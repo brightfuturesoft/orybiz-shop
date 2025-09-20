@@ -219,7 +219,7 @@ export default function AddressBookPage() {
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-gray-900">{address.name}</span>
                     {address.isHome && (
-                      <span className="px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded">HOME</span>
+                      <span className="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded">HOME</span>
                     )}
                   </div>
                   <div className="text-sm text-gray-600">
@@ -304,14 +304,14 @@ export default function AddressBookPage() {
                     <div className="flex flex-wrap gap-1 mt-2">
                       <button
                         onClick={() => handleMakeDefaultShipping(address.id)}
-                        className="text-xs text-blue-600 hover:text-blue-700 disabled:text-gray-400"
+                        className="text-xs text-red-600 hover:text-blue-700 disabled:text-gray-400"
                         disabled={address.isDefaultShipping}
                       >
                         {address.isDefaultShipping ? "Default Shipping" : "Make Shipping"}
                       </button>
                       <button
                         onClick={() => handleMakeDefaultBilling(address.id)}
-                        className="text-xs text-blue-600 hover:text-blue-700 disabled:text-gray-400"
+                        className="text-xs text-red-600 hover:text-red-700 disabled:text-gray-400"
                         disabled={address.isDefaultBilling}
                       >
                         {address.isDefaultBilling ? "Default Billing" : "Make Billing"}
@@ -326,12 +326,12 @@ export default function AddressBookPage() {
 
         {/* Delivery Warning */}
         {showDeliveryWarning && (
-          <div className="mt-4 bg-orange-50 border border-orange-200 rounded-lg p-4 flex items-start gap-3">
-            <div className="flex-shrink-0 w-5 h-5 bg-orange-400 rounded-full flex items-center justify-center mt-0.5">
+          <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+            <div className="flex-shrink-0 w-5 h-5 bg-red-400 rounded-full flex items-center justify-center mt-0.5">
               <span className="text-white text-xs font-bold">!</span>
             </div>
             <div className="flex-1">
-              <p className="text-orange-800 text-sm">
+              <p className="text-red-800 text-sm">
                 Your previous delivery is failed. Add a pin location to improve accurate delivery
               </p>
             </div>
@@ -351,7 +351,7 @@ export default function AddressBookPage() {
         <div className="mt-6 flex justify-center md:justify-end">
           <button
             onClick={handleAddNewAddress}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           >
             + ADD NEW ADDRESS
           </button>
@@ -443,7 +443,7 @@ export default function AddressBookPage() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                   >
                     {editingAddress ? "Update Address" : "Add Address"}
                   </button>

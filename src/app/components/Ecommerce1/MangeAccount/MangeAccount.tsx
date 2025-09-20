@@ -10,7 +10,7 @@ import { useOrderStore } from "@/store/orderStore";
 
 export default function ManageAccountPage() {
   const { user, fetchUser, updateUser, setUser, loading: userLoading } = useUserStore();
-  const { address, fetchAddress, updateAddress, loading: addressLoading } = useAddressStore();
+  const { address, fetchAddress, updateAddress, setAddress, loading: addressLoading } = useAddressStore();
   const { orders, fetchOrders, loading: ordersLoading } = useOrderStore();
   const workspace = useWorkspaceStore((state) => state.workspace);
 

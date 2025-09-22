@@ -89,7 +89,7 @@ export default function Navbar({ workspace, loading }: NavbarProps) {
           <div className="flex items-center space-x-3 md:space-x-4">
             {/* Track Order */}
             <Link
-              href="/wishlist"
+              href="/trackorder"
               className="hidden md:flex items-center gap-1 px-2 py-1 hover:text-red-500 transition-colors"
             >
               <TruckElectric className="h-5 w-5" />

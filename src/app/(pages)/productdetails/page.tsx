@@ -337,6 +337,8 @@ export default function ProductListingPage() {
     router.push("/ecommerce1/cart/checkout")
   }
 
+  console.log("filteredAndSortedProducts",filteredAndSortedProducts)
+
   return (
     <div className="flex min-h-screen bg-gray-50 container mx-auto">
       {/* Sidebar Overlay */}

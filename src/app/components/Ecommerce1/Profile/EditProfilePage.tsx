@@ -1,6 +1,6 @@
 "use client"
 
-import { useUserStore } from "@/store/userStore"
+import { UpdateUser, useUserStore } from "@/store/userStore"
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 
@@ -38,7 +38,6 @@ export default function EditProfilePage() {
   const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString())
   const years = Array.from({ length: 100 }, (_, i) => (new Date().getFullYear() - i).toString())
 
-  // Load user data into state
   useEffect(() => {
     if (!user) {
       fetchUser()
@@ -69,23 +68,33 @@ export default function EditProfilePage() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSaveChanges = async () => {
-    if (!validateForm()) return
-    setIsLoading(true)
-    try {
-      const updatedProfile = { ...profile, email: showChangeEmail && newEmail ? newEmail : profile.email }
-      const updatedUser = await updateUser(updatedProfile)
-      setUser(updatedUser)
-      toast.success("Profile updated successfully!")
-      setShowChangeEmail(false)
-      setNewEmail("")
-      setShowAddPhone(false)
-    } catch (err) {
-      toast.error("Failed to update profile. Try again.")
-    } finally {
-      setIsLoading(false)
-    }
+const handleSaveChanges = async () => {
+  if (!validateForm()) return;
+  setIsLoading(true);
+
+  try {
+    const updatedProfile: UpdateUser = {
+      ...profile,
+      email: showChangeEmail && newEmail ? newEmail : profile.email,
+    };
+    await updateUser(updatedProfile);
+    setUser({
+      ...user!, 
+      ...updatedProfile,
+    });
+
+    toast.success("Profile updated successfully!");
+    setShowChangeEmail(false);
+    setNewEmail("");
+    setShowAddPhone(false);
+  } catch (err) {
+    toast.error("Failed to update profile. Try again.");
+  } finally {
+    setIsLoading(false);
   }
+};
+
+
 
   const handleChangeEmail = () => {
     if (showChangeEmail && newEmail) {

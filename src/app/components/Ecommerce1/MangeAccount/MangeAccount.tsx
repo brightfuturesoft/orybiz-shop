@@ -10,7 +10,7 @@ import { useOrderStore } from "@/store/orderStore";
 
 export default function ManageAccountPage() {
   const { user, fetchUser, updateUser, setUser, loading: userLoading } = useUserStore();
-  const { address, fetchAddress, updateAddress, setAddress, loading: addressLoading } = useAddressStore();
+  const { address, fetchAddress, loading: addressLoading } = useAddressStore();
   const { orders, fetchOrders, loading: ordersLoading } = useOrderStore();
   const workspace = useWorkspaceStore((state) => state.workspace);
 
@@ -24,22 +24,18 @@ export default function ManageAccountPage() {
     if (!user) fetchUser();
   }, [fetchUser, user]);
 
-  // Fetch addresses
   useEffect(() => {
     if (user && workspace) fetchAddress(workspace._id, user._id);
   }, [user, fetchAddress, workspace]);
 
-  // Fetch orders
   useEffect(() => {
     if (workspace?._id && user?._id) fetchOrders(workspace._id, user._id);
   }, [workspace, user, fetchOrders]);
 
-  // Initialize tempProfile when user loads
   useEffect(() => {
     if (user) setTempProfile({ full_name: user.full_name, email: user.email });
   }, [user]);
 
-  // Profile save
   const handleProfileSave = async () => {
     if (!user) return;
     await updateUser({ full_name: tempProfile.full_name, email: tempProfile.email });
@@ -52,7 +48,6 @@ export default function ManageAccountPage() {
     setEditingProfile(false);
   };
 
-  // Address edit
   const handleAddressEdit = (addr: Address) => {
     setEditingAddressId(addr._id);
     setTempAddress(addr);
@@ -63,16 +58,25 @@ export default function ManageAccountPage() {
     setTempAddress({});
   };
 
-  const handleAddressSave = async () => {
-    if (!editingAddressId) return;
-    const { _id, ...updateDataWithoutId } = tempAddress;
-    const updated = await updateAddress(editingAddressId, updateDataWithoutId);
-    setAddress((prev: any) =>
-      prev?.map((addr: any) => (addr._id === editingAddressId ? updated : addr)) || [updated]
-    );
-    setEditingAddressId(null);
-    setTempAddress({});
-  };
+const handleAddressSave = async () => {
+  if (!editingAddressId) return;
+
+  const {  ...updateDataWithoutId } = tempAddress;
+
+  // updateAddress returns the updated address
+  const updated = await useAddressStore.getState().updateAddress(
+    editingAddressId,
+    updateDataWithoutId
+  );
+
+  if (!updated) return;
+
+  // Zustand store already updated, reset UI
+  setEditingAddressId(null);
+  setTempAddress({});
+};
+
+
 
   if ((userLoading && !user) || addressLoading) return <p className="p-4">Loading...</p>;
 

@@ -60,7 +60,6 @@ export default function AddressBookPage() {
 
   const handleMakeDefaultShipping = (id?: string) => {
     if (!id) {
-      // If no ID provided, find the first address to make default
       const firstAddress = addresses[0]
       if (firstAddress) {
         setAddresses(
@@ -82,7 +81,6 @@ export default function AddressBookPage() {
 
   const handleMakeDefaultBilling = (id?: string) => {
     if (!id) {
-      // If no ID provided, find the first address to make default
       const firstAddress = addresses[0]
       if (firstAddress) {
         setAddresses(
@@ -133,10 +131,8 @@ export default function AddressBookPage() {
     e.preventDefault()
 
     if (editingAddress) {
-      // Update existing address
       setAddresses(addresses.map((addr) => (addr.id === editingAddress.id ? { ...addr, ...formData } : addr)))
     } else {
-      // Add new address
       const newAddress: Address = {
         id: Date.now().toString(),
         ...formData,
@@ -154,8 +150,6 @@ export default function AddressBookPage() {
     const addressToDelete = addresses.find((addr) => addr.id === id)
     if (addressToDelete && addresses.length > 1) {
       const updatedAddresses = addresses.filter((addr) => addr.id !== id)
-
-      // If deleted address was default, make first remaining address default
       if (addressToDelete.isDefaultShipping || addressToDelete.isDefaultBilling) {
         const firstAddress = updatedAddresses[0]
         if (firstAddress) {
@@ -163,7 +157,6 @@ export default function AddressBookPage() {
           firstAddress.isDefaultBilling = addressToDelete.isDefaultBilling || firstAddress.isDefaultBilling
         }
       }
-
       setAddresses(updatedAddresses)
     }
   }

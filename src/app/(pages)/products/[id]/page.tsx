@@ -232,11 +232,10 @@ export default function ProductPage() {
         </div>
       </div>
       
-      {
-        relatedProducts?.length < 1 ? null :   <ReletedProducts products={relatedProducts || []} />
-      }
+   {relatedProducts && relatedProducts.length > 0 ? (
+  <ReletedProducts products={relatedProducts} />
+) : null}
 
-    
     </div>
   )
 }

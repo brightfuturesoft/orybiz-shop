@@ -5,11 +5,11 @@ import EditProfilePage from "@/app/components/Ecommerce1/Profile/EditProfilePage
 import Sidebar from "@/app/components/Ecommerce1/Profile/Sidebar"
 import { useUserStore } from "@/store/userStore"
 import React, { useState } from "react"
-import MyOrdersPage from "../components/Ecommerce1/order/MyOrder"
 import Wishlist from "../wishlist/page"
 import { useSearchParams } from "next/navigation"
-import ReviewPage from "../components/Ecommerce1/Profile/Reviews"
-// import ReviewPage from "../components/Ecommerce1/Profile/Reviews"
+import MyOrdersPage from "@/app/components/Ecommerce1/order/MyOrder"
+import ReviewPage from "@/app/components/Ecommerce1/Profile/Reviews"
+
 
 export default function AccountPage() {
   const searchParams = useSearchParams();

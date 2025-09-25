@@ -68,7 +68,7 @@ const MainContent = () => {
         alt={`Banner ${activeIndex + 1}`}
         fill
         priority
-        className="object-cover transition-all duration-500"
+        className=" transition-all duration-500"
       />
 
       {/* gradient overlay for better readability */}

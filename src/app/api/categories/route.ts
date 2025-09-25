@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   const categories = await client
     .db("items")
     .collection("category")
-    .find({ workspace_id: workspace_id})
+    .find({ workspace_id: workspace_id, delete:false})
     .toArray();
 
   return NextResponse.json({ categories });

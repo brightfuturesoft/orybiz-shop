@@ -41,15 +41,7 @@ const BestSellingProduct: React.FC<BestSellingProductProps> = ({ products }) => 
           </div>
             <h2 className="text-2xl md:text-3xl font-semibold mt-2">Best Selling Products</h2>
         </div>
-        <div className="flex justify-center mt-12">
-          {
-            products?.length < 4 ? null : 
-            <button className="bg-red-500 text-white px-10 py-4 rounded cursor-pointer hover:bg-red-600 transition-colors duration-300">
-            View All 
-          </button>
-          }
-          
-        </div>
+       
 
              <div className="flex space-x-2">
           <button
@@ -84,6 +76,17 @@ const BestSellingProduct: React.FC<BestSellingProductProps> = ({ products }) => 
           <ProductCard key={index} product={product} />
         ))}
       </div>
+
+
+       <div className="flex justify-center mt-12">
+          {
+            products?.length < 4 ? null : 
+            <button className="bg-red-500 text-white px-10 py-4 rounded cursor-pointer hover:bg-red-600 transition-colors duration-300">
+            View All 
+          </button>
+          }
+          
+        </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Db, MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = "mongodb+srv://bright_erp:bright_erp@brighterp.a62n9gp.mongodb.net/";
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable in .env");
@@ -12,7 +12,6 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
   if (cachedClient && cachedDb) {
     return { client: cachedClient, db: cachedDb };
   }
-
 
   const client = new MongoClient(MONGODB_URI!); 
   await client.connect();

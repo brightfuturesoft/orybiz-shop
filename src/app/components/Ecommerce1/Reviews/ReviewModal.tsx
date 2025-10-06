@@ -4,10 +4,11 @@ import { useState, useRef, type ChangeEvent } from "react";
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useUserStore } from "@/store/userStore";
+import Image from "next/image";
 
 interface ReviewModalProps {
   isOpen: boolean;
-  order_id?:string;
+  order_id?: string;
   onClose: () => void;
 }
 
@@ -17,7 +18,11 @@ interface UploadedFile {
   preview: string;
 }
 
-export default function ReviewModal({order_id, isOpen, onClose }: ReviewModalProps) {
+export default function ReviewModal({
+  order_id,
+  isOpen,
+  onClose,
+}: ReviewModalProps) {
   const { user } = useUserStore();
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(5);
@@ -59,7 +64,7 @@ export default function ReviewModal({order_id, isOpen, onClose }: ReviewModalPro
         ...formData,
         user_id: user?._id,
         workspace_id: user?.workspace_id,
-        order_id
+        order_id,
       };
       const res = await fetch("/api/reviews", {
         method: "POST",
@@ -154,11 +159,14 @@ export default function ReviewModal({order_id, isOpen, onClose }: ReviewModalPro
               <div className="flex gap-2 mt-3 flex-wrap">
                 {uploadedFiles.map((file) => (
                   <div key={file.id} className="relative group">
-                    <img
-                      src={file.preview || "/placeholder.svg"}
-                      alt="Preview"
-                      className="w-16 h-16 object-cover rounded border border-gray-200"
-                    />
+                    <div className="relative w-16 h-16 rounded border border-gray-200 overflow-hidden">
+                      <Image
+                        src={file.preview || "/placeholder.svg"}
+                        alt="Preview"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                     <button
                       onClick={() => removeFile(file.id)}
                       className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity"

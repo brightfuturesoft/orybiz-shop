@@ -1,16 +1,21 @@
-"use client"
+"use client";
 
-import { CartItem } from "@/app/types/checkout"
+import { CartItem } from "@/app/types/checkout";
+import Image from "next/image";
 
 interface Props {
-  cartItems: CartItem[]
-  subtotal: number
-  discount: number
-  total: number
+  cartItems: CartItem[];
+  subtotal: number;
+  discount: number;
+  total: number;
 }
 
-export default function OrderSummary({ cartItems, subtotal, discount, total }: Props) {
-
+export default function OrderSummary({
+  cartItems,
+  subtotal,
+  discount,
+  total,
+}: Props) {
   return (
     <div className="space-y-6">
       {/* Cart Items */}
@@ -21,11 +26,14 @@ export default function OrderSummary({ cartItems, subtotal, discount, total }: P
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
                   {item.product_image && item.product_image[0] ? (
-                    <img
-                      src={item.product_image}
-                      alt={item.product_name}
-                      className="w-full h-full object-cover"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={item.product_image}
+                        alt={item.product_name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   ) : (
                     <div className="w-8 h-6 bg-gray-600 rounded-sm"></div>
                   )}
@@ -33,18 +41,23 @@ export default function OrderSummary({ cartItems, subtotal, discount, total }: P
                 <div>
                   <span className="text-black">{item.product_name}</span>
                   {item.quantity > 1 && (
-                    <span className="text-gray-500 text-sm ml-2">x{item.quantity}</span>
+                    <span className="text-gray-500 text-sm ml-2">
+                      x{item.quantity}
+                    </span>
                   )}
-                  {item.variation && (item.variation.color || item.variation.size) && (
-                    <div className="text-gray-400 text-xs">
-                      {item.variation.color && (
-                        <span>Color: {item.variation.color}</span>
-                      )}
-                      {item.variation.size && (
-                        <span className="ml-2">Size: {item.variation.size}</span>
-                      )}
-                    </div>
-                  )}
+                  {item.variation &&
+                    (item.variation.color || item.variation.size) && (
+                      <div className="text-gray-400 text-xs">
+                        {item.variation.color && (
+                          <span>Color: {item.variation.color}</span>
+                        )}
+                        {item.variation.size && (
+                          <span className="ml-2">
+                            Size: {item.variation.size}
+                          </span>
+                        )}
+                      </div>
+                    )}
                 </div>
               </div>
               <span className="text-black">
@@ -53,7 +66,9 @@ export default function OrderSummary({ cartItems, subtotal, discount, total }: P
             </div>
           ))
         ) : (
-          <div className="text-center py-8 text-gray-500">Your cart is empty</div>
+          <div className="text-center py-8 text-gray-500">
+            Your cart is empty
+          </div>
         )}
       </div>
 
@@ -79,5 +94,5 @@ export default function OrderSummary({ cartItems, subtotal, discount, total }: P
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useAuthStore } from "@/store/loginStore";
 import { CartItem } from "@/app/types/checkout";
 import { CartActions, CartItemRow, CartTotals } from "@/app/components/Ecommerce1";
 
@@ -12,7 +10,6 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPosting, setIsPosting] = useState(false);
-  const store_user = useAuthStore((state) => state.user);
   const router = useRouter();
 
   // Load cart from localStorage
@@ -58,11 +55,16 @@ export default function Cart() {
     setIsPosting(true);
     try {
       router.push("/cart/checkout");
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
-    } finally {
-      setIsPosting(false);
-    }
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    toast.error(err.message);
+  } else {
+    toast.error("Something went wrong");
+  }
+} finally {
+  setIsPosting(false);
+}
+
   };
 
   if (loading)

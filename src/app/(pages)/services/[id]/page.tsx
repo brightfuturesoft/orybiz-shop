@@ -12,11 +12,7 @@ import { useProductStore } from "@/store/productStore";
 import { PhoneIcon } from "lucide-react";
 
 // Dummy fetch function replace with your API
-const fetchServiceById = async (id: string) => {
-  const res = await fetch(`/api/services/${id}`);
-  if (!res.ok) throw new Error("Service not found");
-  return res.json();
-};
+
 
 export default function ServiceDetailsPage() {
   const params = useParams();

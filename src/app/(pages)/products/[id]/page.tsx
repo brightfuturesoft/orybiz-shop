@@ -44,7 +44,6 @@ export default function ProductPage() {
     : ["/placeholder.svg"]
 
   const colors = variants.map((v:any, i:number) => ({ color: v.color, index: i }))
-  const sizes = variants.filter((v:any) => v.size).map((v:any) => v.size)
 
   const handleAddToCart = () => {
     if (!product) return

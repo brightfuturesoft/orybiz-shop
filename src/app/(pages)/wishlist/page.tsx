@@ -6,20 +6,14 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useUserStore } from "@/store/userStore";
+import Image from "next/image";
 
 const Wishlist = () => {
+  const { user } = useUserStore();
 
-    const { user } = useUserStore();
-   
-
-  const user_id = user?._id || ''; 
-  const {
-    wishlist,
-    loading,
-    error,
-    fetchWishlist,
-    removeFromWishlist
-  } = useWishlistStore();
+  const user_id = user?._id || "";
+  const { wishlist, loading, error, fetchWishlist, removeFromWishlist } =
+    useWishlistStore();
 
   // Fetch wishlist on mount
   useEffect(() => {
@@ -55,14 +49,20 @@ const Wishlist = () => {
               key={item._id}
               className="relative group bg-white p-4 rounded-lg shadow hover:shadow-md transition"
             >
-              <img
+              <Image
                 src={item.product_image || "/placeholder.png"}
                 alt={item.product_name}
+                width={400} 
+                height={192} 
                 className="w-full h-48 object-cover rounded-md mb-2"
               />
 
-              <div className="font-semibold text-gray-800 truncate">{item.product_name}</div>
-              <div className="text-red-500 font-bold mt-1">${item.order_price}</div>
+              <div className="font-semibold text-gray-800 truncate">
+                {item.product_name}
+              </div>
+              <div className="text-red-500 font-bold mt-1">
+                ${item.order_price}
+              </div>
 
               <div className="flex items-center gap-2 mt-1 text-gray-500 text-sm">
                 <span>Size: {item.variation.size || "N/A"}</span>

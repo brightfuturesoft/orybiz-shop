@@ -87,11 +87,16 @@ const handleSaveChanges = async () => {
     setShowChangeEmail(false);
     setNewEmail("");
     setShowAddPhone(false);
-  } catch (err) {
+  } catch (err: unknown) {
+  if (err instanceof Error) {
+    toast.error(err.message || "Failed to update profile. Try again.");
+  } else {
     toast.error("Failed to update profile. Try again.");
-  } finally {
-    setIsLoading(false);
   }
+} finally {
+  setIsLoading(false);
+}
+
 };
 
 

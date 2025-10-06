@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@/app/lib/mongo";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
   try {

@@ -8,6 +8,7 @@ import { useWorkspaceStore } from "../../../../store/workspaceStore";
 import { useUserStore } from "../../../../store/userStore";
 import ReviewModal from "../Reviews/ReviewModal";
 import { rgbToName } from "@/app/utils/colorUtils";
+import Image from "next/image";
 
 const tabs = [
   "All",
@@ -62,7 +63,9 @@ export default function MyOrdersPage() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-0 lg:px-0">
-          <h1 className="text-xl font-semibold  text-gray-900 py-4">My Orders</h1>
+          <h1 className="text-xl font-semibold  text-gray-900 py-4">
+            My Orders
+          </h1>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-0 lg:px-0">
@@ -161,11 +164,14 @@ export default function MyOrdersPage() {
                         className="flex items-start space-x-4"
                       >
                         <div className="flex-shrink-0">
-                          <img
-                            src={item.product_image || "/placeholder.svg"}
-                            alt={item.product_name}
-                            className="h-16 w-16 sm:h-20 sm:w-20 rounded-lg object-cover border border-gray-200"
-                          />
+                          <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-lg border border-gray-200 overflow-hidden">
+                            <Image
+                              src={item.product_image || "/placeholder.svg"}
+                              alt={item.product_name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">

@@ -12,6 +12,7 @@ import { Product } from "@/app/types/product";
 export default function NavbarSearch() {
   const workspace = useWorkspaceStore((state) => state.workspace);
   const { categories, fetchCategories } = useCategoryStore();
+  console.log(categories)
   const { products, fetchProducts } = useProductStore();
   const searchParams = useSearchParams();
   const router = useRouter();

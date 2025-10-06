@@ -1,5 +1,5 @@
 
-import { User, ShoppingBag, XCircle, Star, LogOut } from 'lucide-react';
+import { User, ShoppingBag, Star, LogOut } from 'lucide-react';
  import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 import Link from 'next/link';
@@ -9,7 +9,7 @@ export interface AccountMenuProps {
   onClose: () => void;
 }
 
-const AccountMenu: React.FC<AccountMenuProps> = ({ onClose }) => {
+const AccountMenu: React.FC<AccountMenuProps> = () => {
 
 
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { BillingForm, Breadcrumb, CouponSection, OrderSummary, PaymentMethods } from "@/app/components/Ecommerce1"
@@ -12,10 +11,7 @@ import { useUserStore } from "@/store/userStore"
 
 
 export default function CheckoutPage() {
-  const { user, fetchUser } = useUserStore();
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const { user } = useUserStore();
   const router = useRouter();
   const workspace = useWorkspaceStore((state) => state.workspace);
   const [cartItems, setCartItems] = useState<CartItem[]>([])
@@ -152,11 +148,16 @@ const handlePlaceOrder = async () => {
     window.dispatchEvent(new Event("cartUpdated"));
     setCartItems([]);
     router.push("/");
-  } catch (err: any) {
-    toast.error(err.message || "Something went wrong");
-  } finally {
-    setIsLoading(false);
+  } catch (err: unknown) {
+  if (err instanceof Error) {
+    toast.error(err.message);
+  } else {
+    toast.error("Something went wrong");
   }
+} finally {
+  setIsLoading(false);
+}
+
 };
 
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState, useEffect } from "react";
@@ -19,7 +18,6 @@ export default function ManageAccountPage() {
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
   const [tempAddress, setTempAddress] = useState<Partial<Address>>({});
 
-  // Fetch user
   useEffect(() => {
     if (!user) fetchUser();
   }, [fetchUser, user]);
@@ -62,16 +60,12 @@ const handleAddressSave = async () => {
   if (!editingAddressId) return;
 
   const {  ...updateDataWithoutId } = tempAddress;
-
-  // updateAddress returns the updated address
   const updated = await useAddressStore.getState().updateAddress(
     editingAddressId,
     updateDataWithoutId
   );
 
   if (!updated) return;
-
-  // Zustand store already updated, reset UI
   setEditingAddressId(null);
   setTempAddress({});
 };

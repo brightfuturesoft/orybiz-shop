@@ -39,7 +39,7 @@ jobs:
           # esbuild ships with Next.js — no extra install needed.
           # Compiling to .mjs means the VPS never needs TypeScript at runtime,
           # which prevents Next.js auto-installing TypeScript on every `next start`.
-          ./node_modules/.bin/esbuild next.config.ts \
+          pnpm exec esbuild next.config.ts \
             --bundle=false \
             --platform=node \
             --format=esm \

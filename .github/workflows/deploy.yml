@@ -104,10 +104,14 @@ jobs:
             -o UserKnownHostsFile=/dev/null \
             "$VPS_USER@$VPS_HOST" << 'EOF'
               set -e
+
+              # Load NVM and pnpm PATH for non-interactive shell
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+              export PATH="$HOME/.local/share/pnpm:$PATH"
+
               cd /var/www/orybizz-shop
-
               tar -xzf release.tar.gz
-
               pnpm install --prod --frozen-lockfile
 
               if pm2 describe orybizz-shop > /dev/null 2>&1; then
@@ -119,6 +123,8 @@ jobs:
               fi
 
               rm -f release.tar.gz
-
+              pm2 save
               echo "✅ Deployment complete"
           EOF
+
+        

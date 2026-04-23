@@ -34,15 +34,26 @@ jobs:
       - name: Build Next.js project
         run: pnpm run build
 
+      - name: Compile next.config.ts → next.config.mjs
+        run: |
+          # esbuild ships with Next.js — no extra install needed.
+          # Compiling to .mjs means the VPS never needs TypeScript at runtime,
+          # which prevents Next.js auto-installing TypeScript on every `next start`.
+          ./node_modules/.bin/esbuild next.config.ts \
+            --bundle=false \
+            --platform=node \
+            --format=esm \
+            --outfile=next.config.mjs
+
       - name: Package release bundle
         run: |
+          # next.config.mjs — pre-compiled JS, no TypeScript needed on the VPS
           tar -czf release.tar.gz \
             .next \
             public \
             package.json \
             pnpm-lock.yaml \
-            next.config.* \
-            2>/dev/null || true
+            next.config.mjs
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
@@ -112,6 +123,11 @@ jobs:
 
               cd /var/www/orybizz-shop
               tar -xzf release.tar.gz
+
+              # Set an explicit pnpm store dir to avoid the ENOENT /.pnpm-store error
+              export PNPM_HOME="$HOME/.local/share/pnpm"
+              export PATH="$PNPM_HOME:$PATH"
+              pnpm config set store-dir "$HOME/.pnpm-store"
               pnpm install --prod --frozen-lockfile
 
               if pm2 describe orybizz-shop > /dev/null 2>&1; then

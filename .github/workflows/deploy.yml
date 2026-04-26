@@ -32,6 +32,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Next.js project
+        env:
+          DB_URI: ${{ secrets.DB_URI }}
         run: pnpm run build
 
       - name: Package release bundle
